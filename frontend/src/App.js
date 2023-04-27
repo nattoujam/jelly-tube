@@ -17,7 +17,7 @@ const api_port = '3333';
 
 export async function fetchVideo() {
   const response = await fetch(
-    `http://${api_domain}:${api_port}/videolist`
+    `https://${api_domain}:${api_port}/videolist`
   );
 
   const data = await response.json();
@@ -31,7 +31,7 @@ function Header() {
       <div className="hero-body">
         <nav className='navbar' role='navigation' aria-label='main navigation'>
           <div className='navbar-brand'>
-            <a className='navbar-item' href='http://jelly-fish.local:3000/'>
+            <a className='navbar-item' href='https://jelly-fish.local:3000/'>
               <img src={logo} className="App-logo" alt="logo"/>
               <h1 className="title">Jelly-Tube</h1>
             </a> 
@@ -117,7 +117,7 @@ function MovieIcon(props) {
       <div className="card-image">
         <div className="card">
           <img
-            src={`http://${api_domain}:${api_port}/thumnail.png`}
+            src={`https://${api_domain}:${api_port}/thumnail.png`}
             width='100%'
             height='100%'
             alt={`${name}`}

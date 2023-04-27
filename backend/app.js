@@ -2,7 +2,7 @@
  * @file             : app.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023 04/15
- * Last Modified Date: 2023 04/25
+ * Last Modified Date: 2023 04/27
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
@@ -12,6 +12,11 @@ const mysql = require('mysql2');
 
 const portNum = 3333;
 const app = express();
+const fs = require('fs');
+const server = require('https').createServer({
+  key: fs.readFileSync('./.certs/server.key'),
+  cert: fs.readFileSync('./.certs/server.crt'),
+}, app)
 
 // CORS対策
 const allowCrossDomain = function(req, res, next) {
@@ -77,8 +82,8 @@ app.get('/jt:videoId', (req, res) => {
   console.log(req.protocol);
   console.log(req.get('host'));
   console.log(req.originalUrl);
-  res.end('http://localhost:3333/4/4.m3u8');
+  res.end('https://localhost:3333/4/4.m3u8');
 });
 
-app.listen(portNum);
+server.listen(portNum);
 console.log(`listen: ${portNum}`);

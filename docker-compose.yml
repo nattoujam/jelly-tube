@@ -6,22 +6,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/usr/src/app
+      - ./.certs:/usr/src/app/.certs
     command: sh -c "yarn start"
     ports:
       - "3000:3000"
-    stdin_open: true
-
-  frontend-vue:
-    build:
-      context: ./frontend-vue
-      dockerfile: Dockerfile
-    ports:
-      - "4000:8080"
-    expose: # コンテナ公開用のポート指定（コンテナ間のみ）
-      - "8080"
-    volumes:
-      - ./frontend-vue:/app
-    tty: true
     stdin_open: true
 
   backend:
@@ -33,6 +21,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/usr/src/app
+      - ./.certs:/usr/src/app/.certs
     command: sh -c "yarn start"
     ports:
       - "3333:3333"
