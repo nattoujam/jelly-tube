@@ -66,7 +66,7 @@ app.get('/', (req, res) => {
 app.get('/videolist', (req, res) => {
   console.log('send video list');
   connection.query(
-    'SELECT * FROM videos',
+    'SELECT * FROM Video',
     (err, results) => {
       console.log(results);
       res.status(200).send({ videolist: results });
