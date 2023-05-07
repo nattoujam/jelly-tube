@@ -2,7 +2,7 @@
  * @file             : App.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023 04/16
- * Last Modified Date: 2023 04/27
+ * Last Modified Date: 2023 05/07
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
@@ -11,18 +11,8 @@ import './App.css';
 import 'bulma/css/bulma.css';
 import { useEffect, useState, useMemo, useRef } from 'react';
 import Hls from 'hls.js';
-
-const api_domain = 'jelly-fish.local';
-const api_port = '3333';
-
-export async function fetchVideo() {
-  const response = await fetch(
-    `https://${api_domain}:${api_port}/videolist`
-  );
-
-  const data = await response.json();
-  return data.videolist;
-}
+import VideoTable from './List.js';
+import { fetchVideo, api_domain, api_port } from './query.js';
 
 function Header() {
   // {{{
@@ -170,10 +160,20 @@ function Main() {
   const [contents, setContents] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
+  const query = `
+    query All {
+      videos {
+        id
+        title
+        url
+      }
+    }
+  `;
+
   useEffect(() => {
-    fetchVideo().then((contents) => {
-      setContents(contents);
-      setContentsOrg(contents);
+    fetchVideo(query).then((contents) => {
+      setContents(contents.videos);
+      setContentsOrg(contents.videos);
     });
   }, []);
 
@@ -225,8 +225,10 @@ function App() {
     <div className="App">
       <Header />
       <Main />
+      <VideoTable />
     </div>
   );
+  // }}}
 }
 
 export default App;
