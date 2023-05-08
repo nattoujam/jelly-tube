@@ -1,34 +1,31 @@
 /**
  * @file             : query.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
- * Date              : 2023 05/07
- * Last Modified Date: 2023 05/07
+ * Date              : 2023 05/08
+ * Last Modified Date: 2023 05/08
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
-const api_domain = 'jelly-fish.local';
-const api_port = '3001';
+import gql from 'graphql-tag';
 
-export async function fetchVideo(gqlQuery, params) {
-  const response = await fetch(
-    `http://${api_domain}:${api_port}/graphql`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({
-        query: gqlQuery,
-        variables: params
-      })
+export const GET_VIDEOS = gql`
+  query videoList {
+    videos {
+      id
+      title
+      url
     }
-  );
+  }
+`;
 
-  const data = await response.json();
-  console.log(data.data);
-  return data.data;
-}
-
-export default fetchVideo;
-export { api_domain, api_port };
+export const DELETE_VIDEO = gql`
+  mutation deleteVideo($id: ID!) {
+    deleteVideo (
+      input: {
+        id: $id
+      }
+    ) {
+      id
+    }
+  }
+`;

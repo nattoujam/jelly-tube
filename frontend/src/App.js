@@ -2,50 +2,24 @@
  * @file             : App.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023 04/16
- * Last Modified Date: 2023 05/07
+ * Last Modified Date: 2023 05/08
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
-import logo from './logo.svg';
-import './App.css';
+// import './App.css';
 import 'bulma/css/bulma.css';
 import { useEffect, useState, useMemo, useRef } from 'react';
 import Hls from 'hls.js';
-import VideoTable from './List.js';
-import { fetchVideo, api_domain, api_port } from './query.js';
+import { fetchVideo, api_domain, api_port } from './api/query.js';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function Header() {
-  // {{{
-  return (
-    <header className="hero is-small is-dark is-bold">
-      <div className="hero-body">
-        <nav className='navbar' role='navigation' aria-label='main navigation'>
-          <div className='navbar-brand'>
-            <a className='navbar-item' href='https://jelly-fish.local:3000/'>
-              <img src={logo} className="App-logo" alt="logo"/>
-              <h1 className="title">Jelly-Tube</h1>
-            </a> 
-            <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="menu">
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-            </a>
-          </div>
-          <div id='menu' className='navbar-menu'>
-            <div className='navbar-start'>
-              <a className='navbar-item'>
-                upload
-              </a>
-            </div>
-            <div className='navbar-end'>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </header>
-  );
-  // }}}
-}
+// query
+import { useQuery } from '@apollo/react-hooks';
+import { GET_VIDEOS } from './query.js';
+
+// components
+import VideoTable from './components/List.js';
+import MyHeader from './components/Header.js';
 
 function Movie(props) {
   // {{{
@@ -156,61 +130,56 @@ function Gallery(props) {
 
 function Main() {
   // {{{
-  const [contentsOrg, setContentsOrg] = useState(null);
-  const [contents, setContents] = useState(null);
-  const [selectedMovie, setSelectedMovie] = useState(null);
+  // const [contentsOrg, setContentsOrg] = useState(null);
+  // const [contents, setContents] = useState(null);
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
 
-  const query = `
-    query All {
-      videos {
-        id
-        title
-        url
-      }
-    }
-  `;
+  const { data, loading, error } = useQuery(GET_VIDEOS);
 
-  useEffect(() => {
-    fetchVideo(query).then((contents) => {
-      setContents(contents.videos);
-      setContentsOrg(contents.videos);
-    });
-  }, []);
+  if (loading) return <Loading />;
+  if (error) return <p>Error</p>;
 
   function calcMaxRowCount() {
     // bulmaのcolumnで、何個まで横にならべるかきめるやつ
     // bulma has 12 units in 1 column.
     // 'column is-3' means 12/3 = arrange 4 units per 1 columns horizontally. 
-    if (selectedMovie != null) {
+    if (selectedMovieId != null) {
       return 12 // max 1
     }
     else {
       return 3 // max 4
     }
   }
+
+  function getUnselectedMovies() {
+    return data.videos.filter(v => v.id != selectedMovieId);
+  }
   
   function handleClick(id) {
     console.log(`click ${id}`);
-    setSelectedMovie(id);
-    setContents(contentsOrg.filter(v => v.id != id));
+    setSelectedMovieId(id);
   }
 
   return (
     <main className='section'>
       <div className='columns is-vcenterd is-multiline'>
         {
-          (selectedMovie != null) ? (
+          (selectedMovieId != null) ? (
             <div className='column is-8'>
               <Movie
-                src={`${contentsOrg.find(v => v.id == selectedMovie).url}`}
-                name={`${selectedMovie}`}
+                src={ data.videos.find(v => v.id == selectedMovieId).url }
+                name={ selectedMovieId }
               />
             </div>
           ) : (<div></div>)
         }
         <div className='column scroll'>
           <div className='container'>
-            <Gallery contents={contents} onClick={handleClick} maxRowCount={calcMaxRowCount()}/>
+            <Gallery
+              contents={ getUnselectedMovies() }
+              onClick={ handleClick }
+              maxRowCount={ calcMaxRowCount() }
+            />
           </div>
         </div>
       </div>
@@ -219,14 +188,27 @@ function Main() {
   // }}}
 }
 
+function AdminArea() {
+  return (
+    <main className='section'>
+      <h1 className='title'>Admin Area</h1>
+      <VideoTable />
+    </main>
+  );
+}
+
 function App() {
   // {{{
   return (
-    <div className="App">
-      <Header />
-      <Main />
-      <VideoTable />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <MyHeader />
+        <Routes>
+          <Route exact path='/' element={ <Main /> } />
+          <Route path='/admin' element={ <AdminArea /> } />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
   // }}}
 }
