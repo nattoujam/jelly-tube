@@ -16,7 +16,7 @@ import { GET_VIDEOS, DELETE_VIDEO } from '../query.js';
 import React, { Fragment } from 'react';
 
 // components
-import { Loading } from './Loading.js'
+import Loading from './Loading.js'
 
 function VideoRow(props) {
   const { id, title, url } = props;
