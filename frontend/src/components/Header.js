@@ -10,9 +10,15 @@ import logo from '../logo.svg';
 import '../App.css';
 import 'bulma/css/bulma.css';
 import { Link } from "react-router-dom";
+import { useEffect, useState, useMemo, useRef } from 'react';
 
 function MyHeader(props) {
-  const { onClick } = props
+  // const { onClick } = props
+  const [ active, setActive ] = useState(false);
+
+  function handleClick() {
+    setActive(!active);
+  }
 
   return (
     <header className="hero is-small is-dark is-bold">
@@ -23,13 +29,13 @@ function MyHeader(props) {
               <img src={logo} className="App-logo" alt="logo"/>
               <h1 className="title">Jelly-Tube</h1>
             </a> 
-            <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="menu">
+            <button role="button" className={`navbar-burger ${active ? 'is-active' : ''}`} aria-label="menu" aria-expanded="false" data-target="menu" onClick={ handleClick }>
               <span aria-hidden="true"></span>
               <span aria-hidden="true"></span>
               <span aria-hidden="true"></span>
-            </a>
+            </button>
           </div>
-          <div id='menu' className='navbar-menu'>
+          <div id='menu' className={`navbar-menu ${active ? 'is-active' : ''}`}>
             <div className='navbar-start'>
               <a href='/upload' className='navbar-item'>
                 upload
