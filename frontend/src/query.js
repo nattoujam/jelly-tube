@@ -21,6 +21,22 @@ export const GET_VIDEOS = gql`
   }
 `;
 
+export const CREATE_VIDEO = gql`
+  mutation createVideo($title: String!, $url: String!) {
+    createVideo(
+      input:{
+        title: $title
+        url: $url
+      }
+    ){
+      video {
+        title
+        url
+      }
+    }
+  }
+`;
+
 export const DELETE_VIDEO = gql`
   mutation deleteVideo($id: ID!) {
     deleteVideo (

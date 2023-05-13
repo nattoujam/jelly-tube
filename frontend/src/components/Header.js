@@ -37,7 +37,7 @@ function MyHeader(props) {
           </div>
           <div id='menu' className={`navbar-menu ${active ? 'is-active' : ''}`}>
             <div className='navbar-start'>
-              <a href='/upload' className='navbar-item'>
+              <a href='/admin/upload' className='navbar-item'>
                 upload
               </a>
               <a href='/admin' className='navbar-item'>

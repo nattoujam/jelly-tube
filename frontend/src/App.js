@@ -16,6 +16,7 @@ import MyHeader from './components/Header.js';
 // views
 import AdminArea from './views/AdminArea.js';
 import Home from './views/Home.js';
+import UploadVideo from './views/UploadVideo.js';
 
 function App() {
   // {{{
@@ -26,6 +27,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={ <Home /> } />
           <Route path='/admin' element={ <AdminArea /> } />
+          <Route path='/admin/upload' element={ <UploadVideo /> } />
         </Routes>
       </div>
     </BrowserRouter>
