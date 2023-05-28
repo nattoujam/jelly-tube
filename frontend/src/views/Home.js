@@ -2,7 +2,7 @@
  * @file             : Home.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023 05/10
- * Last Modified Date: 2023 05/10
+ * Last Modified Date: 2023 05/21
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
@@ -19,11 +19,45 @@ import { GET_VIDEOS } from '../query.js';
 import Loading from '../components/Loading.js';
 
 function Movie(props) {
+  const { src } = props;
+  console.log('url='+src);
+
+  if (src.match(/\.m3u8$/)) {
+    return <HLSMovie {...props} />
+  }
+  else {
+    return <OtherMovie {...props} />
+  }
+}
+
+function OtherMovie(props) {
+  const { src } = props;
+  const { title } = props;
+
+  function handlePlayMovie() {
+    console.log('play')
+  }
+
+  return (
+    <div className="card">
+      <div className="card-image">
+        <div className="card">
+          <video
+            src={src}
+            controls
+            onPlay={handlePlayMovie}
+          ></video>
+          <p>{title}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HLSMovie(props) {
   // {{{
   const { src } = props;
-  const { name } = props;
-
-  console.log('url='+src)
+  const { title } = props;
 
   function handlePlayMovie() {
     console.log('play')
@@ -58,7 +92,7 @@ function Movie(props) {
               Not Support Browser.
             </p>
           )}
-          <p>{name}</p>
+          <p>{title}</p>
         </div>
       </div>
     </div>
@@ -69,7 +103,7 @@ function Movie(props) {
 function MovieIcon(props) {
   // {{{
   const { id } = props;
-  const { name } = props;
+  const { title } = props;
   const { playCount } = props;
   const { onClick } = props;
 
@@ -78,13 +112,13 @@ function MovieIcon(props) {
       <div className="card-image">
         <div className="card">
           <img
-            src={`https://${api_domain}:${api_port}/thumnail.png`}
+            src={`http://${api_domain}:${api_port}/thumnail.png`}
             width='100%'
             height='100%'
-            alt={`${name}`}
+            alt={`${title}`}
             onClick={() => onClick(id)}
           />
-          <p>{name}</p>
+          <p>{title}</p>
           <p>{playCount}</p>
         </div>
       </div>
@@ -110,7 +144,7 @@ function Gallery(props) {
         dev += 1;
         return (
           <div key={`${dev}${c.id}`} className={`column is-${maxRowCount}`}>
-            <MovieIcon id={`${c.id}`} name={`${c.title}`} onClick={onClick} />
+            <MovieIcon id={`${c.id}`} title={`${c.title}`} onClick={onClick} />
           </div>
         );
       })}
@@ -156,8 +190,8 @@ function Home() {
           (selectedMovieId != null) ? (
             <div className='column is-8'>
               <Movie
-                src={ data.videos.find(v => v.id == selectedMovieId).url }
-                name={ selectedMovieId }
+                src={ data.videos.find(v => v.id == selectedMovieId).videoFile.path }
+                title={ v.title }
               />
             </div>
           ) : (<div></div>)
