@@ -9,14 +9,18 @@
 import gql from 'graphql-tag';
 
 export const api_domain = 'jelly-fish.local';
-export const api_port = '3001';
+// export const api_port = '3001';
+export const api_port = '3333';
 
 export const GET_VIDEOS = gql`
   query videoList {
     videos {
       id
       title
-      url
+      videoFile {
+        name
+        path
+      }
     }
   }
 `;

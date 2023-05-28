@@ -56,7 +56,7 @@ function Dialog() {
 }
 
 function VideoRow(props) {
-  const { id, title, url, onDelete } = props;
+  const { id, title, name, path, onDelete } = props;
 
   function handleClick(e) {
     onDelete(id);
@@ -66,7 +66,8 @@ function VideoRow(props) {
     <tr>
       <th>{ id }</th>
       <td>{ title }</td>
-      <td>{ url }</td>
+      <td>{ name }</td>
+      <td className='txt-limit'>{ path }</td>
       <td><Link className='button' to='/admin/edit'>Edit</Link></td>
       <td><button className='button is-danger' onClick={ handleClick }>Delete</button></td>
     </tr>
@@ -101,6 +102,8 @@ function VideoTable() {
   if (loading || mutateLoading) return <Loading />;
   if (error || mutateError) return <p>Error</p>;
 
+  console.log(data)
+
   return (
     <>
       <table className='table'>
@@ -108,7 +111,8 @@ function VideoTable() {
           <tr>
             <th>ID</th>
             <th>Title</th>
-            <th>URL</th>
+            <th>Name</th>
+            <th>Path</th>
             <th></th>
             <th></th>
           </tr>
@@ -117,7 +121,8 @@ function VideoTable() {
           <tr>
             <th>ID</th>
             <th>Title</th>
-            <th>URL</th>
+            <th>Name</th>
+            <th>Path</th>
             <th></th>
             <th></th>
           </tr>
@@ -125,8 +130,14 @@ function VideoTable() {
         <tbody>
           {
             data.videos.map(c => {
+              let name = '-'                
+              let path = '-'
+              if (c.videoFile !== null) {
+                name = c.videoFile.name
+                path = c.videoFile.path
+              }
               return (
-                <VideoRow key={ c.id } id={ c.id } title={ c.title } url={ c.url } onDelete={ (id) => handleDeleting(id) } />
+                <VideoRow key={ c.id } id={ c.id } title={ c.title } name={ name } path={ path } onDelete={ (id) => handleDeleting(id) } />
               );
             })
           }
