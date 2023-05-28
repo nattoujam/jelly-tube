@@ -9,8 +9,14 @@ module Types
 
     field :videos, [Types::VideoType], null: false,
       description: "Videoの一覧取得"
+    field :videoFiles, [Types::VideoFileType], null: false,
+      description: "VideoFileの一覧取得"
+
     def videos
       Video.all
+    end
+    def videoFiles
+      VideoFile.all
     end
   end
 end
