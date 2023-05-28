@@ -63,4 +63,12 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  default_url_options[:protocol] = "http"
+  default_url_options[:host] = "jelly-fish.local"
+  default_url_options[:port] = 3001
 end
+
+
+
+

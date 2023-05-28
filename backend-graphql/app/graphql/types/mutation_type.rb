@@ -6,5 +6,7 @@ module Types
       description: "指定したVideoを編集"
     field :deleteVideo, mutation: Mutations::DeleteVideo,
       description: "指定したVideoを削除"
+    field :uploadVideoFile, mutation: Mutations::UploadVideoFile,
+      description: "指定したVideoのファイルをアップロード"
   end
 end

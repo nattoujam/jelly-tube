@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 module Types
-  class VideoType < Types::BaseObject
+  class VideoFileType < Types::BaseObject
     field :id, ID, null: false
-    field :title, String
-    field :url, String
-    field :video_file, VideoFileType
+    field :video_id, ID, null: false
+    field :name, String, null: false
+    field :path, String, null: false
+    field :content_type, String, null: false
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
   end
