@@ -6,6 +6,8 @@
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
-export function Loading() {
+function Loading() {
   return <p>Loading...</p>
 }
+
+export default Loading
