@@ -9,11 +9,11 @@
 import 'bulma/css/bulma.css'
 import { useEffect, useState, useMemo, useRef } from 'react'
 import Hls from 'hls.js'
-import { api_domain, api_port } from '../query.js'
+import { api_domain, api_port } from '../const.js'
 
 // query
 import { useQuery } from '@apollo/client'
-import { GET_VIDEOS } from '../query.js'
+import { GET_VIDEOS } from '../graphql/query.js'
 
 // components
 import Loading from '../components/Loading.js'

@@ -14,7 +14,7 @@ import Dropzone from '../components/Dropzone.js'
 
 // query
 import { useMutation } from '@apollo/client'
-import { CREATE_VIDEO } from '../mutation.js'
+import { CREATE_VIDEO } from '../graphql/mutation.js'
 
 function Banner(props) {
   if (props.status === 'success') {

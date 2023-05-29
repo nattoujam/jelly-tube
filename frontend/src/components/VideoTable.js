@@ -12,10 +12,10 @@ import { Link } from 'react-router-dom'
 
 // query
 import { useQuery, useMutation } from '@apollo/client'
-import { GET_VIDEOS } from '../query.js'
-import { DELETE_VIDEO } from '../mutation.js'
+import { GET_VIDEOS } from '../graphql/query.js'
+import { DELETE_VIDEO } from '../graphql/mutation.js'
 
-import React, { Fragment } from 'react'
+import React from 'react'
 
 // components
 import Loading from './Loading.js'

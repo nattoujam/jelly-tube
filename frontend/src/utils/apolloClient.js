@@ -8,12 +8,8 @@
 
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
-// import { HttpLink } from 'apollo-link-http'
+import { api_domain, api_port} from '../const.js'
 
-const api_domain = 'jelly-fish.local'
-const api_port = '3333'
-
-// const link = new HttpLink({
 const link = createUploadLink({
   uri: `http://${api_domain}:${api_port}/graphql`,
 })

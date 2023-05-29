@@ -9,8 +9,7 @@
 import logo from '../logo.svg';
 import '../App.css';
 import 'bulma/css/bulma.css';
-import { Link } from "react-router-dom";
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useState } from 'react';
 
 function MyHeader(props) {
   // const { onClick } = props
