@@ -2,86 +2,113 @@
  * @file             : UploadVideo.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023 05/12
- * Last Modified Date: 2023 05/12
+ * Last Modified Date: 2023 05/29
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
-import { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+
+// components
+import Dropzone from '../components/Dropzone.js'
 
 // query
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { GET_VIDEOS, CREATE_VIDEO } from '../query.js';
+import { useMutation } from '@apollo/client'
+import { CREATE_VIDEO } from '../mutation.js'
 
+function Banner(props) {
+  if (props.status === 'success') {
+    return (
+      <section className="hero is-success is-small">
+        <div className="hero-body">
+          <p className="title">Upload Success</p>
+        </div>
+      </section>
+    )
+  } else if (props.status === 'uploading') {
+    return (
+      <section className="hero is-warning is-small">
+        <div className="hero-body">
+          <p className="title">Uploading...</p>
+          <p className="subtitle">title = {props.title}</p>
+        </div>
+      </section>
+    )
+  } else {
+    return <></>
+  }
+}
 function UploadVideo() {
-  const [ title, setTitle ] = useState('');
-  const [ url, setUrl ] = useState('hogehoge'); // TODO: default = ''
-  const [ success, setSuccess ] = useState(false);
-  const navigate = useNavigate();
+  const [title, setTitle] = useState('')
+  const [file, setFile] = useState(null)
+  const [status, setStatus] = useState('first')
+  const navigate = useNavigate()
   const [mutate, { mutateLoading, mutateError }] = useMutation(CREATE_VIDEO, {
     variables: {
       title: title,
-      url: url
+      movie: file,
     },
-    onCompleted: () => setSuccess(true),
-  });
+    onCompleted: () => {
+      setStatus('success')
+    },
+  })
+
+  function handleFile(file) {
+    console.log('upload')
+    console.log(file)
+    setFile(file)
+  }
 
   function handleSubmit() {
+    console.log('submit')
+    setStatus('uploading')
     mutate()
   }
 
-  if (mutateLoading) return <Loading />;
-  if (mutateError) return <p>Error</p>;
+  if (mutateLoading) return <Loading />
+  if (mutateError) return <p>Error</p>
 
   return (
     <>
-      <div className='section'>
-        <h1 className='title'>Upload Video</h1>
-        <div className='field'>
-          <label className='label'>Title</label>
-          <div className='control'>
-            <input className='input' type='text' placeholder='title' value={ title } onChange={ e => setTitle(e.target.value) }/>
+      <div className="section">
+        <h1 className="title">Upload Video</h1>
+        <div className="field">
+          <label className="label">Title</label>
+          <div className="control">
+            <input
+              className="input"
+              type="text"
+              placeholder="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
         </div>
         <div className="file has-name is-right">
           <label className="file-label">
-            <input className="file-input" type="file" name="resume" onChange={ e => setUrl(e.target.value) }/>
-            <span className="file-cta">
-              <span className="file-icon">
-                <i className="fas fa-upload"></i>
-              </span>
-              <span className="file-label">
-                Choose a file…
-              </span>
-            </span>
-            <span className="file-name">
-              { url }
-            </span>
+            <Dropzone handleFile={handleFile} />
           </label>
         </div>
         <div className="field is-grouped">
           <div className="control">
-            <button className="button is-link" onClick={ handleSubmit }>Submit</button>
+            <button
+              className="button is-link"
+              onClick={handleSubmit}
+              disabled={status === 'uploading'}
+            >
+              Submit
+            </button>
           </div>
           <div className="control">
-            <button className="button is-link is-light" onClick={ () => navigate(-1) }>Cancel</button>
+            <button className="button is-link is-light" onClick={() => navigate(-1)}>
+              Cancel
+            </button>
           </div>
         </div>
+        <Banner status={status} title={title} />
       </div>
-      { success ? (
-        <section className="hero is-success is-small">
-          <div className="hero-body">
-            <p className="title">
-              Upload Success
-            </p>
-            <p className='subtitle'>
-              title = { title }
-            </p>
-          </div>
-        </section>
-      ) : <div /> }
     </>
-  );
+  )
 }
 
-export default UploadVideo;
+export default UploadVideo
