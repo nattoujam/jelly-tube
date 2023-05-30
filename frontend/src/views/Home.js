@@ -1,10 +1,14 @@
-/**
- * @file             : Home.js
- * @author           : nattoujam <public.kyuuanago@gmail.com>
- * Date              : 2023 05/10
- * Last Modified Date: 2023 05/29
- * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Home.js                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nattoujam <Public.kyuuanago@gmail.com>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/31 00:21:53 by nattoujam         #+#    #+#             */
+/*   Updated: 2023/05/31 00:21:59 by nattoujam        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 import 'bulma/css/bulma.css'
 import { useEffect, useState, useMemo, useRef } from 'react'
@@ -18,41 +22,42 @@ import { GET_VIDEOS } from '../graphql/query.js'
 // components
 import Loading from '../components/Loading.js'
 
-function Movie(props) {
-  const { src } = props
-  console.log('url=' + src)
+const movieStyle = {
+  maxHeight: '70vh',
+}
 
-  if (src.match(/\.m3u8$/)) {
-    return <HLSMovie {...props} />
-  } else {
-    return <OtherMovie {...props} />
-  }
+function Movie(props) {
+  console.log('url=' + props.src)
+
+  return (
+    <>
+      <div className="card has-text-centered">
+        <div className="card-image has-background-black">
+          {props.src.match(/\.m3u8$/) ? <HLSMovie {...props} /> : <OtherMovie {...props} />}
+        </div>
+      </div>
+      <div className="is-size-3 card-content">{props.title}</div>
+    </>
+  )
 }
 
 function OtherMovie(props) {
   const { src } = props
-  const { title } = props
 
   function handlePlayMovie() {
     console.log('play')
   }
 
   return (
-    <div className="card">
-      <div className="card-image">
-        <div className="card">
-          <video src={src} controls onPlay={handlePlayMovie}></video>
-          <p>{title}</p>
-        </div>
-      </div>
-    </div>
+    <>
+      <video style={movieStyle} src={src} controls onPlay={handlePlayMovie}></video>
+    </>
   )
 }
 
 function HLSMovie(props) {
   // {{{
   const { src } = props
-  const { title } = props
 
   function handlePlayMovie() {
     console.log('play')
@@ -73,18 +78,13 @@ function HLSMovie(props) {
   }, [src])
 
   return (
-    <div className="card">
-      <div className="card-image">
-        <div className="card">
-          {isSupportBrowser ? (
-            <video ref={videoRef} controls onPlay={handlePlayMovie}></video>
-          ) : (
-            <p>Not Support Browser.</p>
-          )}
-          <p>{title}</p>
-        </div>
-      </div>
-    </div>
+    <>
+      {isSupportBrowser ? (
+        <video style={movieStyle} ref={videoRef} controls onPlay={handlePlayMovie}></video>
+      ) : (
+        <p>Not Support Browser.</p>
+      )}
+    </>
   )
   // }}}
 }
@@ -99,18 +99,20 @@ function MovieIcon(props) {
   return (
     <div className="card">
       <div className="card-image">
-        <div className="card">
-          <img
-            src={`http://${api_domain}:${api_port}/thumnail.png`}
-            width="100%"
-            height="100%"
-            alt={`${title}`}
-            onClick={() => onClick(id)}
-          />
-          <p>{title}</p>
-          <p>{playCount}</p>
-        </div>
+        <img
+          src={`http://${api_domain}:${api_port}/thumnail.png`}
+          width="100%"
+          height="100%"
+          alt={`${title}`}
+          onClick={() => onClick(id)}
+        />
       </div>
+      <div className="card-content p-3 is-size-6">{title}</div>
+      <footer className="card-footer">
+        <p className="card-footer-item is-size-7">{playCount}</p>
+        <p className="card-footer-item is-size-7">hoge</p>
+        <p className="card-footer-item is-size-7">fuga</p>
+      </footer>
     </div>
   )
   // }}}
@@ -173,18 +175,27 @@ function Home() {
 
   return (
     <main className="section">
-      <div className="columns is-vcenterd is-multiline">
+      <div className="columns is-vcenterd">
         {selectedMovieId != null ? (
-          <div className="column is-8">
-            <Movie
-              src={data.videos.find((v) => v.id == selectedMovieId).videoFile.path}
-              title={data.videos.find((v) => v.id == selectedMovieId).title}
-            />
+          <div className="column is-10">
+            <div className="card">
+              <Movie
+                src={data.videos.find((v) => v.id == selectedMovieId).videoFile.path}
+                title={data.videos.find((v) => v.id == selectedMovieId).title}
+              />
+            </div>
           </div>
         ) : (
           <div></div>
         )}
-        <div className="column scroll">
+        <div
+          className="column"
+          style={{
+            maxHeight: '80vh',
+            overflowY: 'scroll',
+            overscrollBehavior: 'none',
+          }}
+        >
           <div className="container">
             <Gallery
               contents={getUnselectedMovies()}

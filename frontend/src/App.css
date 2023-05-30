@@ -1,5 +1,5 @@
 .App {
-  /* text-align: center; */
+  max-height: 90vh;
 }
 
 .App-logo {
@@ -15,7 +15,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,24 +35,6 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.horizontal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.scroll {
-  overflow-y: scroll;
-}
-
-.adjust-vheight {
-  height: 100vh - 10px;
-}
-
-.pinned {
-  position: fixed;
 }
 
 .txt-limit {

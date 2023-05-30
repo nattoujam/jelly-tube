@@ -1,10 +1,14 @@
-/**
- * @file             : UploadVideo.js
- * @author           : nattoujam <public.kyuuanago@gmail.com>
- * Date              : 2023 05/12
- * Last Modified Date: 2023 05/29
- * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   UploadVideo.js                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nattoujam <Public.kyuuanago@gmail.com>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/30 21:49:11 by nattoujam         #+#    #+#             */
+/*   Updated: 2023/05/30 22:15:50 by nattoujam        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -27,17 +31,18 @@ function Banner(props) {
     )
   } else if (props.status === 'uploading') {
     return (
-      <section className="hero is-warning is-small">
+      <footer className="hero is-warning is-small">
         <div className="hero-body">
           <p className="title">Uploading...</p>
           <p className="subtitle">title = {props.title}</p>
         </div>
-      </section>
+      </footer>
     )
   } else {
     return <></>
   }
 }
+
 function UploadVideo() {
   const [title, setTitle] = useState('')
   const [file, setFile] = useState(null)
@@ -72,22 +77,35 @@ function UploadVideo() {
     <>
       <div className="section">
         <h1 className="title">Upload Video</h1>
-        <div className="field">
-          <label className="label">Title</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
+        <div className="tile is-ancestor">
+          <div className="tile is-parent is-vertical is-8">
+            <div className="tile is-child">
+              <label className="label">Title</label>
+              <div className="control">
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="tile is-child">
+              <label className="label">広告欄</label>
+              <div className="control">
+                <input className="input" type="text" placeholder="広告募集中" />
+              </div>
+            </div>
+            <div className="tile is-child">
+              <Dropzone handleFile={handleFile} />
+            </div>
           </div>
-        </div>
-        <div className="file has-name is-right">
-          <label className="file-label">
-            <Dropzone handleFile={handleFile} />
-          </label>
+          <div className="tile is-parent">
+            <div className="tile is-child box">
+              <p>広告募集中</p>
+            </div>
+          </div>
         </div>
         <div className="field is-grouped">
           <div className="control">

@@ -1,3 +1,5 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "42header.username": "nattoujam",
+  "42header.email": "Public.kyuuanago@gmail.com"
 }
