@@ -1,10 +1,14 @@
-/**
- * @file             : Dropzone.js
- * @author           : nattoujam <public.kyuuanago@gmail.com>
- * Date              : 2023 05/29
- * Last Modified Date: 2023 05/29
- * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Dropzone.js                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nattoujam <Public.kyuuanago@gmail.com>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/30 22:00:38 by nattoujam         #+#    #+#             */
+/*   Updated: 2023/05/30 22:00:42 by nattoujam        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 import React, { useMemo, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
