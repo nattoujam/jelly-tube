@@ -7,16 +7,16 @@
  */
 
 // import './App.css';
-import 'bulma/css/bulma.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import 'bulma/css/bulma.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 // components
-import MyHeader from './components/Header.js';
+import MyHeader from './components/Header.js'
 
 // views
-import AdminArea from './views/AdminArea.js';
-import Home from './views/Home.js';
-import UploadVideo from './views/UploadVideo.js';
+import AdminArea from './views/AdminArea.js'
+import Home from './views/Home.js'
+import UploadVideo from './views/UploadVideo.js'
 
 function App() {
   // {{{
@@ -25,14 +25,14 @@ function App() {
       <div className="App">
         <MyHeader />
         <Routes>
-          <Route exact path='/' element={ <Home /> } />
-          <Route path='/admin' element={ <AdminArea /> } />
-          <Route path='/admin/upload' element={ <UploadVideo /> } />
+          <Route exact path="/" element={<Home />} />
+          <Route path="/admin" element={<AdminArea />} />
+          <Route path="/admin/upload" element={<UploadVideo />} />
         </Routes>
       </div>
     </BrowserRouter>
-  );
+  )
   // }}}
 }
 
-export default App;
+export default App
