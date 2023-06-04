@@ -5,7 +5,7 @@ module Mutations
     argument :id, ID, required: true
 
     def resolve(id:)
-      Video.find(id).delete
+      Video.find(id).destroy
       { id: id }
     end
   end
