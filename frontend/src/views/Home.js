@@ -6,13 +6,12 @@
 /*   By: nattoujam <Public.kyuuanago@gmail.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 00:21:53 by nattoujam         #+#    #+#             */
-/*   Updated: 2023/05/31 00:21:59 by nattoujam        ###   ########.fr       */
+/*   Updated: 2023/06/05 00:38:43 by nattoujam        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import 'bulma/css/bulma.css'
-import { useEffect, useState, useMemo, useRef } from 'react'
-import Hls from 'hls.js'
+import { useState } from 'react'
 import { api_domain, api_port } from '../const.js'
 
 // query
@@ -21,73 +20,7 @@ import { GET_VIDEOS } from '../graphql/query.js'
 
 // components
 import Loading from '../components/Loading.js'
-
-const movieStyle = {
-  maxHeight: '70vh',
-}
-
-function Movie(props) {
-  console.log('url=' + props.src)
-
-  return (
-    <>
-      <div className="card has-text-centered">
-        <div className="card-image has-background-black">
-          {props.src.match(/\.m3u8$/) ? <HLSMovie {...props} /> : <OtherMovie {...props} />}
-        </div>
-      </div>
-      <div className="is-size-3 card-content">{props.title}</div>
-    </>
-  )
-}
-
-function OtherMovie(props) {
-  const { src } = props
-
-  function handlePlayMovie() {
-    console.log('play')
-  }
-
-  return (
-    <>
-      <video style={movieStyle} src={src} controls onPlay={handlePlayMovie}></video>
-    </>
-  )
-}
-
-function HLSMovie(props) {
-  // {{{
-  const { src } = props
-
-  function handlePlayMovie() {
-    console.log('play')
-  }
-
-  const isSupportBrowser = useMemo(() => Hls.isSupported(), [])
-  const videoRef = useRef(null)
-  useEffect(() => {
-    if (isSupportBrowser) {
-      var hls = new Hls()
-      hls.loadSource(src)
-      hls.attachMedia(videoRef.current)
-      return () => {
-        hls.removeAllListeners()
-        hls.stopLoad()
-      }
-    }
-  }, [src])
-
-  return (
-    <>
-      {isSupportBrowser ? (
-        <video style={movieStyle} ref={videoRef} controls onPlay={handlePlayMovie}></video>
-      ) : (
-        <p>Not Support Browser.</p>
-      )}
-    </>
-  )
-  // }}}
-}
+import Movie from '../components/Movie.js'
 
 function MovieIcon(props) {
   // {{{
