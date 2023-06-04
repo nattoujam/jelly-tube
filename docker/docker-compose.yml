@@ -2,46 +2,32 @@ version: '3.9'
 services:
   frontend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile_f
+    image: 'jelly-tube/frontend'
+    container_name: 'jelly-tube-frontend'
     volumes:
-      - ./frontend:/usr/src/app
-      - ./.certs:/usr/src/app/.certs
+      - ../frontend:/usr/src/app
+      - ../.certs:/usr/src/app/.certs
     command: sh -c "yarn start"
     ports:
-      - "3000:3000"
+      - '3000:3000'
     stdin_open: true
-    # network_mode: 'host'
 
-  # backend:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   volumes:
-  #     - ./backend:/usr/src/app
-  #     - ./.certs:/usr/src/app/.certs
-  #   command: sh -c "yarn start"
-  #   ports:
-  #     - "3333:3333"
-  #   stdin_open: true
-  
-  backend-graphql:
+  backend:
     build:
-      context: ./docker/
-      dockerfile: Dockerfile_bg
+      context: ../
+      dockerfile: docker/Dockerfile_b
+    image: 'jelly-tube/backend'
+    container_name: 'jelly-tube-backend'
     volumes:
-      - ./backend-graphql:/app
-      - ./.certs:/app/.certs
+      - ../backend:/app
+      - ../.certs:/app/.certs
     command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
-    # command: /bin/sh -c 'bundle install'
     ports:
       - '3333:3001'
     tty: true
     stdin_open: true
-    # network_mode: 'host'
 
   # db:
   #   image: mysql:8.0.33
