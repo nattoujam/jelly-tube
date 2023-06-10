@@ -2,7 +2,7 @@
  * @file             : query.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023 05/08
- * Last Modified Date: 2023 05/29
+ * Last Modified Date: 2023 06/10
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
@@ -15,6 +15,9 @@ export const GET_VIDEOS = gql`
       title
       videoFile {
         name
+        path
+      }
+      thumnail {
         path
       }
     }
