@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_28_083744) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_09_123515) do
   create_table "Videos", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
@@ -45,6 +45,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_28_083744) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "thumnails", force: :cascade do |t|
+    t.integer "video_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["video_id"], name: "index_thumnails_on_video_id"
+  end
+
   create_table "video_files", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -54,4 +61,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_28_083744) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "thumnails", "videos"
 end

@@ -1,20 +1,17 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   UploadVideo.js                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nattoujam <Public.kyuuanago@gmail.com>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 21:49:11 by nattoujam         #+#    #+#             */
-/*   Updated: 2023/05/30 22:15:50 by nattoujam        ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/**
+ * @file             : UploadVideo.js
+ * @author           : nattoujam <public.kyuuanago@gmail.com>
+ * Date              : 2023 05/30
+ * Last Modified Date: 2023 06/10
+ * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
+ */
 
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 // components
 import Dropzone from '../components/Dropzone.js'
+import Movie from '../components/Movie.js'
 
 // query
 import { useMutation } from '@apollo/client'
@@ -43,15 +40,130 @@ function Banner(props) {
   }
 }
 
+function ThumnailGenerator(props) {
+  const file = props.file
+  const w = 320
+  const h = 180
+  let max = 0
+  const [context, setContext] = useState(null)
+  const videoRef = useRef(null)
+  const canvasRef = useRef(null)
+  const [thumnail, setThumnail] = useState(null)
+  const [holdThumnail, setHoldThumnail] = useState(null)
+  const onSelected = props.onSelected
+
+  useEffect(() => {
+    console.log('set context' + canvasRef.current)
+    const canvasContext = canvasRef.current.getContext('2d')
+    setContext(canvasContext)
+  })
+
+  function handleDurationChange() {
+    max = Math.floor(videoRef.current.duration)
+    console.log('max', max)
+  }
+
+  function handleSeek() {
+    console.log('seeked')
+
+    if (context !== null && file !== null) {
+      context.drawImage(videoRef.current, 0, 0, w, h)
+      context.canvas.toBlob(
+        (b) => {
+          setThumnail(b)
+          if (holdThumnail === null) {
+            setHoldThumnail(b)
+            onSelected(b)
+          }
+        },
+        'image/jpeg',
+        0.75
+      )
+    }
+  }
+
+  function randomSeekVideo() {
+    console.log(videoRef.current)
+    if (file !== null) {
+      const seek = Math.floor(Math.random() * (max - 1) + 1)
+      console.log('seek to: ' + seek + ' max: ' + max)
+      // videoRef.current.fastSeek(seek)
+      videoRef.current.currentTime = seek
+    }
+  }
+
+  function handleSelected() {
+    setHoldThumnail(thumnail)
+    onSelected(thumnail)
+  }
+
+  return (
+    <>
+      <video
+        style={{ display: 'none' }}
+        ref={videoRef}
+        src={file === null ? '' : URL.createObjectURL(file)}
+        onSeeked={handleSeek}
+        onDurationChange={handleDurationChange}
+      ></video>
+      <canvas style={{ display: 'none' }} ref={canvasRef} width={w} height={h}></canvas>
+      <div className="columns is-vcenterd">
+        <div className="column is-6">
+          <figure className="image">
+            {thumnail === null ? (
+              <></>
+            ) : (
+              <>
+                <img src={URL.createObjectURL(thumnail)} />
+                <figcaption className="label has-text-centerd">生成されたサムネイル</figcaption>
+              </>
+            )}
+          </figure>
+        </div>
+        <div className="column is-6">
+          <figure className="image">
+            {holdThumnail === null ? (
+              <></>
+            ) : (
+              <>
+                <img style={{ border: 'solid cyan' }} src={URL.createObjectURL(holdThumnail)} />
+                <figcaption className="label has-text-centerd">現在選択中のサムネイル</figcaption>
+              </>
+            )}
+          </figure>
+        </div>
+      </div>
+      <div className="field is-grouped">
+        <div className="control">
+          <button className="button" onClick={randomSeekVideo}>
+            generate
+          </button>
+        </div>
+        <div className="control">
+          <button className="button" onClick={handleSelected}>
+            select
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function Preview() {
+  return <></>
+}
+
 function UploadVideo() {
   const [title, setTitle] = useState('')
   const [file, setFile] = useState(null)
+  const [thumnailFile, setThumnailFile] = useState(null)
   const [status, setStatus] = useState('first')
   const navigate = useNavigate()
   const [mutate, { mutateLoading, mutateError }] = useMutation(CREATE_VIDEO, {
     variables: {
       title: title,
       movie: file,
+      thumnail: thumnailFile,
     },
     onCompleted: () => {
       setStatus('success')
@@ -68,6 +180,15 @@ function UploadVideo() {
     console.log('submit')
     setStatus('uploading')
     mutate()
+  }
+
+  function handleSelected(thumnailBlob) {
+    console.log('set thumnail')
+    console.log(thumnailBlob)
+    const name = file.name.replace(/^(.+)\..+$/, '$1') + '.jpg'
+    const iFile = new File([thumnailBlob], name, { type: thumnailBlob.type })
+    console.log(iFile)
+    setThumnailFile(iFile)
   }
 
   if (mutateLoading) return <Loading />
@@ -98,12 +219,19 @@ function UploadVideo() {
               </div>
             </div>
             <div className="tile is-child">
+              <label className="label">動画投稿欄</label>
               <Dropzone handleFile={handleFile} />
+            </div>
+            <div className="tile is-child">
+              <label className="label">サムネイル選択</label>
+              <div className="box">
+                <ThumnailGenerator file={file} onSelected={handleSelected} />
+              </div>
             </div>
           </div>
           <div className="tile is-parent">
             <div className="tile is-child box">
-              <p>広告募集中</p>
+              <Preview />
             </div>
           </div>
         </div>

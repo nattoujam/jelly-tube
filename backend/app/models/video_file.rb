@@ -9,7 +9,7 @@ class VideoFile < ApplicationRecord
   def path
     return '' unless media.attached?
 
-  Rails.application.routes.url_helpers.url_for(media)
+    Rails.application.routes.url_helpers.url_for(media)
   end
 
   def content_type

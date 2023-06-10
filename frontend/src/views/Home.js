@@ -26,6 +26,7 @@ function MovieIcon(props) {
   // {{{
   const { id } = props
   const { title } = props
+  const { thumnailURL } = props
   const { playCount } = props
   const { onClick } = props
 
@@ -33,7 +34,7 @@ function MovieIcon(props) {
     <div className="card">
       <div className="card-image">
         <img
-          src={`http://${api_domain}:${api_port}/thumnail.png`}
+          src={thumnailURL}
           width="100%"
           height="100%"
           alt={`${title}`}
@@ -68,7 +69,12 @@ function Gallery(props) {
         dev += 1
         return (
           <div key={`${dev}${c.id}`} className={`column is-${maxRowCount}`}>
-            <MovieIcon id={`${c.id}`} title={`${c.title}`} onClick={onClick} />
+            <MovieIcon
+              id={`${c.id}`}
+              title={`${c.title}`}
+              thumnailURL={c.thumnail.path}
+              onClick={onClick}
+            />
           </div>
         )
       })}
