@@ -17,7 +17,7 @@ const movieStyle = {
   maxHeight: '70vh',
 }
 
-function Movie(props) {
+export function Movie(props) {
   console.log('url=' + props.src)
 
   return (
@@ -32,7 +32,7 @@ function Movie(props) {
   )
 }
 
-function OtherMovie(props) {
+export function OtherMovie(props) {
   const { src } = props
 
   function handlePlayMovie() {
@@ -46,7 +46,7 @@ function OtherMovie(props) {
   )
 }
 
-function HLSMovie(props) {
+export function HLSMovie(props) {
   // {{{
   const { src } = props
 
@@ -79,5 +79,3 @@ function HLSMovie(props) {
   )
   // }}}
 }
-
-export default Movie

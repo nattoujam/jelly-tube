@@ -1,14 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Home.js                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nattoujam <Public.kyuuanago@gmail.com>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 00:21:53 by nattoujam         #+#    #+#             */
-/*   Updated: 2023/06/05 00:38:43 by nattoujam        ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/**
+ * @file             : Home.js
+ * @author           : nattoujam <public.kyuuanago@gmail.com>
+ * Date              : 2023/05/31
+ * Last Modified Date: 2023 06/10
+ * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
+ */
 
 import 'bulma/css/bulma.css'
 import { useState } from 'react'
@@ -20,7 +16,7 @@ import { GET_VIDEOS } from '../graphql/query.js'
 
 // components
 import Loading from '../components/Loading.js'
-import Movie from '../components/Movie.js'
+import { Movie } from '../components/Movie.js'
 
 function MovieIcon(props) {
   // {{{

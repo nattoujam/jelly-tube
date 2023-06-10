@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 
 // components
 import Dropzone from '../components/Dropzone.js'
-import Movie from '../components/Movie.js'
+import { OtherMovie } from '../components/Movie.js'
 
 // query
 import { useMutation } from '@apollo/client'
@@ -41,7 +41,7 @@ function Banner(props) {
 }
 
 function ThumnailGenerator(props) {
-  const file = props.file
+  const { file } = props
   const w = 320
   const h = 180
   let max = 0
@@ -87,6 +87,8 @@ function ThumnailGenerator(props) {
     if (file !== null) {
       const seek = Math.floor(Math.random() * (max - 1) + 1)
       console.log('seek to: ' + seek + ' max: ' + max)
+
+      // firefox only
       // videoRef.current.fastSeek(seek)
       videoRef.current.currentTime = seek
     }
@@ -149,8 +151,17 @@ function ThumnailGenerator(props) {
   )
 }
 
-function Preview() {
-  return <></>
+function Preview(props) {
+  const { videoFile } = props
+  if (videoFile == null) {
+    return (
+      <div className="card">
+        <div className="box has-background-dark" style={{ aspectRatio: '16 / 9' }} />
+      </div>
+    )
+  } else {
+    return <OtherMovie src={URL.createObjectURL(videoFile)} />
+  }
 }
 
 function UploadVideo() {
@@ -219,19 +230,20 @@ function UploadVideo() {
               </div>
             </div>
             <div className="tile is-child">
-              <label className="label">動画投稿欄</label>
-              <Dropzone handleFile={handleFile} />
-            </div>
-            <div className="tile is-child">
               <label className="label">サムネイル選択</label>
               <div className="box">
                 <ThumnailGenerator file={file} onSelected={handleSelected} />
               </div>
             </div>
           </div>
-          <div className="tile is-parent">
-            <div className="tile is-child box">
-              <Preview />
+          <div className="tile is-parent is-vertical">
+            <div className="tile is-child">
+              <label className="label">動画投稿欄</label>
+              <Dropzone handleFile={handleFile} />
+            </div>
+            <div className="tile is-child">
+              <label className="label">プレビュー</label>
+              <Preview videoFile={file} />
             </div>
           </div>
         </div>

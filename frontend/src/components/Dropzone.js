@@ -1,14 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Dropzone.js                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nattoujam <Public.kyuuanago@gmail.com>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 22:00:38 by nattoujam         #+#    #+#             */
-/*   Updated: 2023/05/30 22:00:42 by nattoujam        ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/**
+ * @file             : Dropzone.js
+ * @author           : nattoujam <public.kyuuanago@gmail.com>
+ * Date              : 2023/05/30
+ * Last Modified Date: 2023 06/10
+ * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
+ */
 
 import React, { useMemo, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
@@ -42,7 +38,6 @@ const rejectStyle = {
 }
 
 function Dropzone(props) {
-  // onDrop returns a function that will return our file.
   const onDrop = useCallback((files) => {
     props.handleFile(files[0])
   })
