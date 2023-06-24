@@ -10,13 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_09_123515) do
-  create_table "Videos", force: :cascade do |t|
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
+ActiveRecord::Schema[7.0].define(version: 2023_06_24_014151) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -45,6 +39,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_123515) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "tag_videos", force: :cascade do |t|
+    t.integer "tag_id"
+    t.integer "video_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_tag_videos_on_tag_id"
+    t.index ["video_id"], name: "index_tag_videos_on_video_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "tag_video_id"
+    t.integer "video_id"
+    t.index ["tag_video_id"], name: "index_tags_on_tag_video_id"
+    t.index ["video_id"], name: "index_tags_on_video_id"
+  end
+
   create_table "thumnails", force: :cascade do |t|
     t.integer "video_id", null: false
     t.datetime "created_at", null: false
@@ -59,7 +72,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_123515) do
     t.index ["video_id"], name: "index_video_files_on_video_id"
   end
 
+  create_table "videos", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "tag_video_id"
+    t.integer "tag_id"
+    t.index ["tag_id"], name: "index_videos_on_tag_id"
+    t.index ["tag_video_id"], name: "index_videos_on_tag_video_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "tag_videos", "tags"
+  add_foreign_key "tag_videos", "videos"
+  add_foreign_key "tags", "tag_videos"
+  add_foreign_key "tags", "videos"
   add_foreign_key "thumnails", "videos"
+  add_foreign_key "videos", "tag_videos"
+  add_foreign_key "videos", "tags"
 end
