@@ -2,7 +2,7 @@
  * @file             : Home.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023/05/31
- * Last Modified Date: 2023 06/10
+ * Last Modified Date: 2023 06/24
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
@@ -73,18 +73,19 @@ function Gallery(props) {
 
 function Home() {
   // {{{
-  const [selectedMovieId, setSelectedMovieId] = useState(null)
-
+  const [selectedMovie, setSelectedMovie] = useState(null)
+  const [unselectedMovies, setUnselectedMovies] = useState(null)
   const { data, loading, error } = useQuery(GET_VIDEOS)
 
   if (loading) return <Loading />
   if (error) return <p>Error</p>
 
+
   function calcMaxRowCount() {
     // bulmaのcolumnで、何個まで横にならべるかきめるやつ
     // bulma has 12 units in 1 column.
     // 'column is-3' means 12/3 = arrange 4 units per 1 columns horizontally.
-    if (selectedMovieId != null) {
+    if (selectedMovie != null) {
       return 12 // max 1
     } else {
       return 3 // max 4
@@ -96,15 +97,18 @@ function Home() {
     setUnselectedMovies(data.videos.filter((v) => v.id != id))
   }
 
+  console.log(data)
+
   return (
     <main className="section">
       <div className="columns is-vcenterd">
-        {selectedMovieId != null ? (
+        {selectedMovie != null ? (
           <div className="column is-10">
             <div className="card">
               <Movie
-                src={data.videos.find((v) => v.id == selectedMovieId).videoFile.path}
-                title={data.videos.find((v) => v.id == selectedMovieId).title}
+                src={selectedMovie.videoFile.path}
+                title={selectedMovie.title}
+                tags={selectedMovie.tags.map((t) => t.name)}
               />
             </div>
           </div>
@@ -121,7 +125,7 @@ function Home() {
         >
           <div className="container">
             <Gallery
-              contents={getUnselectedMovies()}
+              contents={selectedMovie === null ? data.videos : unselectedMovies}
               onClick={handleClick}
               maxRowCount={calcMaxRowCount()}
             />

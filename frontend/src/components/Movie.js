@@ -1,14 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Movie.js                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nattoujam <Public.kyuuanago@gmail.com>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/05 00:34:21 by nattoujam         #+#    #+#             */
-/*   Updated: 2023/06/05 00:36:33 by nattoujam        ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/**
+ * @file             : Movie.js
+ * @author           : nattoujam <public.kyuuanago@gmail.com>
+ * Date              : 2023 06/05
+ * Last Modified Date: 2023 06/24
+ * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
+ */
 
 import { useEffect, useMemo, useRef } from 'react'
 import Hls from 'hls.js'
@@ -19,15 +15,27 @@ const movieStyle = {
 
 export function Movie(props) {
   console.log('url=' + props.src)
+  const tags = props.tags
 
   return (
     <>
-      <div className="card has-text-centered">
-        <div className="card-image has-background-black">
+      <div className="card">
+        <div className="card-image has-text-centered has-background-black">
           {props.src.match(/\.m3u8$/) ? <HLSMovie {...props} /> : <OtherMovie {...props} />}
         </div>
+        <div className="is-size-3 card-content">{props.title}</div>
+        <footer className="card-footer">
+          {tags
+            .sort((t1, t2) => t1 > t2)
+            .map((t, i) => {
+              return (
+                <div key={i} className="card-footer-item">
+                  {t}
+                </div>
+              )
+            })}
+        </footer>
       </div>
-      <div className="is-size-3 card-content">{props.title}</div>
     </>
   )
 }
