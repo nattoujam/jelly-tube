@@ -20,11 +20,7 @@ import { Movie } from '../components/Movie.js'
 
 function MovieIcon(props) {
   // {{{
-  const { id } = props
-  const { title } = props
-  const { thumnailURL } = props
-  const { playCount } = props
-  const { onClick } = props
+  const { id, title, thumnailURL, playCount, onClick } = props
 
   return (
     <div className="card">
@@ -33,7 +29,7 @@ function MovieIcon(props) {
           src={thumnailURL}
           width="100%"
           height="100%"
-          alt={`${title}`}
+          alt={title}
           onClick={() => onClick(id)}
         />
       </div>
@@ -49,11 +45,8 @@ function MovieIcon(props) {
 }
 
 function Gallery(props) {
-  // {{{
-  const { contents } = props
-  const { onClick } = props
-  const { maxRowCount } = props
-  let dev = 0
+  // {{
+  const { contents, maxRowCount, onClick } = props
 
   if (contents == null) {
     return <Loading />
@@ -62,12 +55,11 @@ function Gallery(props) {
   return (
     <div className="columns is-vcenterd is-multiline">
       {contents.map((c) => {
-        dev += 1
         return (
-          <div key={`${dev}${c.id}`} className={`column is-${maxRowCount}`}>
+          <div key={c.id} className={`column is-${maxRowCount}`}>
             <MovieIcon
-              id={`${c.id}`}
-              title={`${c.title}`}
+              id={c.id}
+              title={c.title}
               thumnailURL={c.thumnail.path}
               onClick={onClick}
             />
@@ -99,13 +91,9 @@ function Home() {
     }
   }
 
-  function getUnselectedMovies() {
-    return data.videos.filter((v) => v.id != selectedMovieId)
-  }
-
   function handleClick(id) {
-    console.log(`click ${id}`)
-    setSelectedMovieId(id)
+    setSelectedMovie(data.videos.find((v) => v.id == id))
+    setUnselectedMovies(data.videos.filter((v) => v.id != id))
   }
 
   return (
