@@ -5,10 +5,12 @@ module Mutations
     argument :title, String, required: true
     argument :movie, ApolloUploadServer::Upload, required: true
     argument :thumnail, ApolloUploadServer::Upload, required: true
+    argument :tag_ids, [Int]
 
-    def resolve(title:, movie:, thumnail:)
+    def resolve(title:, movie:, thumnail:, tag_ids:)
       Video.transaction {
-        video = Video.create!(title: title)
+        tags = Tag.find(tag_ids)
+        video = Video.create!(title: title, tags: tags)
 
         VideoFile.transaction {
           video.create_video_file! unless video.video_file
