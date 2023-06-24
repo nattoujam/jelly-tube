@@ -2,7 +2,7 @@
  * @file             : UploadVideo.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023 05/30
- * Last Modified Date: 2023 06/10
+ * Last Modified Date: 2023 06/24
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
@@ -14,8 +14,9 @@ import Dropzone from '../components/Dropzone.js'
 import { OtherMovie } from '../components/Movie.js'
 
 // query
-import { useMutation } from '@apollo/client'
-import { CREATE_VIDEO } from '../graphql/mutation.js'
+import { useQuery, useMutation } from '@apollo/client'
+import { GET_TAGS } from '../graphql/query.js'
+import { CREATE_VIDEO, CREATE_TAG } from '../graphql/mutation.js'
 
 function Banner(props) {
   if (props.status === 'success') {
@@ -38,6 +39,101 @@ function Banner(props) {
   } else {
     return <></>
   }
+}
+
+function TagContainer(props) {
+  const { selectedTags, onDeleted } = props
+
+  return (
+    <>
+      <div className="input tags">
+        {selectedTags.map((t) => {
+          return (
+            <span key={t.id} className="tag">
+              {t.name}
+              <button className="delete is-small" onClick={() => onDeleted(t.id)}></button>
+            </span>
+          )
+        })}
+      </div>
+    </>
+  )
+}
+
+function TagSelectBox(props) {
+  const { availableTags, onSelected } = props
+
+  return (
+    <>
+      <div className="select">
+        <select>
+          <option>Select Tag</option>
+          {[...availableTags]
+            .sort((t1, t2) => t1.name > t2.name)
+            .map((t) => {
+              return (
+                <option key={t.id} onClick={() => onSelected(t.id)}>
+                  {t.name}
+                </option>
+              )
+            })}
+        </select>
+      </div>
+    </>
+  )
+}
+
+function TagCreate(props) {
+  const { onCreate } = props
+  const [newTagName, setNewTagName] = useState('')
+
+  function handleClick(name) {
+    onCreate(name)
+    setNewTagName('')
+  }
+
+  return (
+    <>
+      <div className="field has-addons">
+        <div className="control">
+          <input
+            className="input"
+            type="text"
+            placeholder="tag"
+            value={newTagName}
+            onChange={(e) => setNewTagName(e.target.value)}
+          />
+        </div>
+        <div className="control">
+          <button
+            className="button"
+            disabled={newTagName === ''}
+            onClick={() => handleClick(newTagName)}
+          >
+            Create
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function TagForm(props) {
+  const { selectedTags, availableTags, onSelected, onDeleted, onCreate } = props
+
+  return (
+    <>
+      <div className="field has-addons">
+        <div className="control">
+          <TagSelectBox availableTags={availableTags} onSelected={onSelected} />
+        </div>
+        <div className="control">
+          <TagContainer selectedTags={selectedTags} onDeleted={onDeleted} />
+        </div>
+      </div>
+      <TagCreate onCreate={onCreate} />
+    </>
+  )
 }
 
 function ThumnailGenerator(props) {
@@ -168,18 +264,51 @@ function UploadVideo() {
   const [title, setTitle] = useState('')
   const [file, setFile] = useState(null)
   const [thumnailFile, setThumnailFile] = useState(null)
+  const [selectedTags, setSelectedTags] = useState([])
   const [status, setStatus] = useState('first')
   const navigate = useNavigate()
+  const { data, loading, error, refetch } = useQuery(GET_TAGS)
   const [mutate, { mutateLoading, mutateError }] = useMutation(CREATE_VIDEO, {
     variables: {
       title: title,
       movie: file,
       thumnail: thumnailFile,
+      tagIds: selectedTags.map((t) => parseInt(t.id)),
     },
     onCompleted: () => {
       setStatus('success')
     },
   })
+  const [createTag, { createTagLoading, createTagError }] = useMutation(CREATE_TAG)
+
+  if (loading) return <p>Loading tags...</p>
+  if (error) return <p>Error</p>
+
+  function handleSelectTag(selectingTagId) {
+    const tag = data.tags.find((t) => t.id === selectingTagId)
+    if (!selectedTags.includes(tag)) {
+      setSelectedTags([...selectedTags, tag])
+    } else {
+      // TODO
+      // Duplicate tags warning
+    }
+  }
+
+  function handleDeleteTag(deletingTagId) {
+    setSelectedTags(selectedTags.filter((t) => t.id !== deletingTagId))
+  }
+
+  function handleCreateTag(newTagName) {
+    createTag({
+      variables: {
+        name: newTagName,
+      },
+      onCompleted: (d) => {
+        console.log(d)
+      },
+    })
+    refetch()
+  }
 
   function handleFile(file) {
     console.log('upload')
@@ -200,6 +329,10 @@ function UploadVideo() {
     const iFile = new File([thumnailBlob], name, { type: thumnailBlob.type })
     console.log(iFile)
     setThumnailFile(iFile)
+  }
+
+  function nop() {
+    console.log('nop')
   }
 
   if (mutateLoading) return <Loading />
@@ -224,9 +357,15 @@ function UploadVideo() {
               </div>
             </div>
             <div className="tile is-child">
-              <label className="label">広告欄</label>
+              <label className="label">タグ</label>
               <div className="control">
-                <input className="input" type="text" placeholder="広告募集中" />
+                <TagForm
+                  selectedTags={selectedTags}
+                  availableTags={data.tags}
+                  onSelected={handleSelectTag}
+                  onDeleted={handleDeleteTag}
+                  onCreate={handleCreateTag}
+                />
               </div>
             </div>
             <div className="tile is-child">

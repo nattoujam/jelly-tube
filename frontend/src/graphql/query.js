@@ -26,3 +26,12 @@ export const GET_VIDEOS = gql`
     }
   }
 `
+
+export const GET_TAGS = gql`
+  query tagList {
+    tags {
+      id
+      name
+    }
+  }
+`
