@@ -68,7 +68,3 @@ Rails.application.configure do
   default_url_options[:host] = "jelly-fish.local"
   default_url_options[:port] = 3333
 end
-
-
-
-

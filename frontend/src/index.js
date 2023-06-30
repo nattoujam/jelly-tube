@@ -2,7 +2,7 @@
  * @file             : index.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023 05/08
- * Last Modified Date: 2023 05/29
+ * Last Modified Date: 2023 06/25
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
@@ -13,6 +13,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ApolloProvider } from '@apollo/client'
 import client from './utils/apolloClient'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 ReactDOM.render(
   <ApolloProvider client={client}>
@@ -22,6 +23,9 @@ ReactDOM.render(
   </ApolloProvider>,
   document.getElementById('root')
 )
+
+// Enable PWA
+serviceWorkerRegistration.register()
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

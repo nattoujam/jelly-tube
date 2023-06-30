@@ -6,9 +6,9 @@ services:
       dockerfile: docker/Dockerfile_f
     image: 'jelly-tube/frontend'
     container_name: 'jelly-tube-frontend'
+    restart: always
     volumes:
       - ../frontend:/usr/src/app
-      - ../.certs:/usr/src/app/.certs
     command: sh -c "yarn start"
     ports:
       - '3000:3000'
@@ -20,27 +20,25 @@ services:
       dockerfile: docker/Dockerfile_b
     image: 'jelly-tube/backend'
     container_name: 'jelly-tube-backend'
+    restart: always
     volumes:
       - ../backend:/app
-      - ../.certs:/app/.certs
-    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
+    command: /bin/sh -c "bundle install && rm -f tmp/pids/server.pid && bundle exec rails s -p 3001"
     ports:
       - '3333:3001'
     tty: true
     stdin_open: true
 
-  # db:
-  #   image: mysql:8.0.33
-  #   ports:
-  #     - "3306:3306"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: jelly_root
-  #     TZ: "Asia/Tokyo"
-  #   volumes:
-  #     - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
-  #     - ./db/db:/var/lib/mysql
-  #     - ./db/seed:/docker-entrypoint-initdb.d
-  #   healthcheck:
-  #        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-pjelly_root"]
-  #        timeout: 20s
-  #        retries: 5
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - '80:80'
+      - '443:443'
+    links:
+      - frontend
+    restart: always
+    environment:
+      DOMAINS: 'jelly-fish.local -> http://frontend:3000, api.jelly-fish.local -> http://backend:3001'
+      STAGE: 'local'
+    volumes:
+      - ../https-portal:/var/lib/https-portal

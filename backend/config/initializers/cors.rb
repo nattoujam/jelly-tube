@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "jelly.nattoujam.home:3000","jelly-fish.local:3000"
+    origins "http://jelly.nattoujam.home:3000","http://jelly-fish.local:3000","https://jelly-fish.local"
 
     resource "*",
       headers: :any,
