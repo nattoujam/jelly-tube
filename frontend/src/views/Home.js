@@ -8,7 +8,6 @@
 
 import 'bulma/css/bulma.css'
 import { useState } from 'react'
-import { api_domain, api_port } from '../const.js'
 
 // query
 import { useQuery } from '@apollo/client'
@@ -25,13 +24,7 @@ function MovieIcon(props) {
   return (
     <div className="card">
       <div className="card-image">
-        <img
-          src={thumnailURL}
-          width="100%"
-          height="100%"
-          alt={title}
-          onClick={() => onClick(id)}
-        />
+        <img src={thumnailURL} width="100%" height="100%" alt={title} onClick={() => onClick(id)} />
       </div>
       <div className="card-content p-3 is-size-6">{title}</div>
       <footer className="card-footer">
@@ -57,12 +50,7 @@ function Gallery(props) {
       {contents.map((c) => {
         return (
           <div key={c.id} className={`column is-${maxRowCount}`}>
-            <MovieIcon
-              id={c.id}
-              title={c.title}
-              thumnailURL={c.thumnail.path}
-              onClick={onClick}
-            />
+            <MovieIcon id={c.id} title={c.title} thumnailURL={c.thumnail.path} onClick={onClick} />
           </div>
         )
       })}
@@ -79,7 +67,6 @@ function Home() {
 
   if (loading) return <Loading />
   if (error) return <p>Error</p>
-
 
   function calcMaxRowCount() {
     // bulmaのcolumnで、何個まで横にならべるかきめるやつ
