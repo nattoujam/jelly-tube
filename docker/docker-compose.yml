@@ -9,10 +9,11 @@ services:
     volumes:
       - ../frontend:/usr/src/app
       - ../.certs:/usr/src/app/.certs
-    command: sh -c "yarn start"
+    command: sh -c "yarn install && yarn start"
     ports:
       - '3000:3000'
     stdin_open: true
+    restart: always
 
   backend:
     build:
@@ -23,11 +24,12 @@ services:
     volumes:
       - ../backend:/app
       - ../.certs:/app/.certs
-    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
+    command: /bin/sh -c "bundle install && rails db:migrate && rm -f tmp/pids/server.pid && bundle exec rails s -p 3001 -b '0.0.0.0'"
     ports:
       - '3333:3001'
     tty: true
     stdin_open: true
+    restart: always
 
   # db:
   #   image: mysql:8.0.33
