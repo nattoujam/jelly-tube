@@ -305,9 +305,9 @@ function UploadVideo() {
       },
       onCompleted: (d) => {
         console.log(d)
+        refetch()
       },
     })
-    refetch()
   }
 
   function handleFile(file) {
