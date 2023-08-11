@@ -1,7 +1,7 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.hosts << 'jelly-fish.local'
+  config.hosts << ENV['HOSTNAME']
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -64,9 +64,9 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
-  default_url_options[:protocol] = "http"
-  default_url_options[:host] = "jelly-fish.local"
-  default_url_options[:port] = 3333
+  default_url_options[:protocol] = ENV['PROTOCOL']
+  default_url_options[:host] = ENV['HOSTNAME']
+  default_url_options[:port] = ENV['BACKEND_PORT']
 end
 
 

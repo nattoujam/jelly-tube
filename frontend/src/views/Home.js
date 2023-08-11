@@ -2,13 +2,12 @@
  * @file             : Home.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023/05/31
- * Last Modified Date: 2023 06/24
+ * Last Modified Date: 2023 08/11
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
 import 'bulma/css/bulma.css'
 import { useState } from 'react'
-import { api_domain, api_port } from '../const.js'
 
 // query
 import { useQuery } from '@apollo/client'
