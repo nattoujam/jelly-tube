@@ -2,16 +2,15 @@
  * @file             : apolloClient.js
  * @author           : nattoujam <public.kyuuanago@gmail.com>
  * Date              : 2023 05/29
- * Last Modified Date: 2023 05/29
+ * Last Modified Date: 2023 08/11
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { createUploadLink } from 'apollo-upload-client'
-import { api_domain, api_port} from '../const.js'
 
 const link = createUploadLink({
-  uri: `http://${api_domain}:${api_port}/graphql`,
+  uri: `${process.env.REACT_APP_API_PROTOCOL}://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/graphql`,
 })
 const client = new ApolloClient({
   cache: new InMemoryCache(),

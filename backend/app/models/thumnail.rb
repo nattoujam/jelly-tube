@@ -1,4 +1,6 @@
 class Thumnail < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
   belongs_to :video
   has_one_attached :image
 
@@ -9,7 +11,7 @@ class Thumnail < ApplicationRecord
   def path
     return '' unless image.attached?
 
-    Rails.application.routes.url_helpers.url_for(image)
+    url_for(image)
   end
 
   def content_type
