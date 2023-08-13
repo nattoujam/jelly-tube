@@ -67,13 +67,19 @@ function TagSelectBox(props) {
   return (
     <>
       <div className="select">
-        <select>
-          <option>Select Tag</option>
+        <select
+          onChange={(e) => {
+            if (e.target.value !== 0) {
+              onSelected(e.target.value)
+            }
+          }}
+        >
+          <option value="0">Select Tag</option>
           {[...availableTags]
             .sort((t1, t2) => t1.name > t2.name)
             .map((t) => {
               return (
-                <option key={t.id} onClick={() => onSelected(t.id)}>
+                <option key={t.id} value={t.id}>
                   {t.name}
                 </option>
               )
