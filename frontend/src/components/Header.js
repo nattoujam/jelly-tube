@@ -12,7 +12,6 @@ import 'bulma/css/bulma.css';
 import { useState } from 'react';
 
 function MyHeader(props) {
-  // const { onClick } = props
   const [ active, setActive ] = useState(false);
 
   function handleClick() {
@@ -28,7 +27,7 @@ function MyHeader(props) {
               <img src={logo} className="App-logo" alt="logo"/>
               <h1 className="title">Jelly-Tube</h1>
             </a> 
-            <button role="button" className={`navbar-burger ${active ? 'is-active' : ''}`} aria-label="menu" aria-expanded="false" data-target="menu" onClick={ handleClick }>
+            <button role="button" className={`navbar-burger ${active ? 'is-active' : ''}`} aria-label="menu" aria-expanded="false" data-target="menu" onClick={handleClick}>
               <span aria-hidden="true"></span>
               <span aria-hidden="true"></span>
               <span aria-hidden="true"></span>
@@ -36,11 +35,14 @@ function MyHeader(props) {
           </div>
           <div id='menu' className={`navbar-menu ${active ? 'is-active' : ''}`}>
             <div className='navbar-start'>
-              <a href='/admin/upload' className='navbar-item'>
+              <a href='/upload' className='navbar-item'>
                 upload
               </a>
-              <a href='/admin' className='navbar-item'>
-                admin area
+              <a href='/admin/video/list' className='navbar-item'>
+                video list (admin)
+              </a>
+              <a href='/admin/tag/list' className='navbar-item'>
+                tag list (admin)
               </a>
             </div>
             <div className='navbar-end'>

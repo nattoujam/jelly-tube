@@ -1,12 +1,6 @@
-# File              : tag.rb
-# Author            : nattoujam <public.kyuuanago@gmail.com>
-# Date              : 2023 06/24
-# Last Modified Date: 2023 06/24
-# Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
-
 class Tag < ApplicationRecord
-  has_many :tag_videos
-  has_many :videos, through: :tag_videos
+  has_many :tag_video_relations, dependent: :destroy
+  has_many :videos, through: :tag_video_relations
 
-  validates :name, uniqueness: true, presence: true
+  validates :name, uniqueness: true
 end

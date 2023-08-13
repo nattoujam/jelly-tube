@@ -33,11 +33,6 @@ function MovieIcon(props) {
         />
       </div>
       <div className="card-content p-3 is-size-6">{title}</div>
-      <footer className="card-footer">
-        <p className="card-footer-item is-size-7">{playCount}</p>
-        <p className="card-footer-item is-size-7">hoge</p>
-        <p className="card-footer-item is-size-7">fuga</p>
-      </footer>
     </div>
   )
   // }}}

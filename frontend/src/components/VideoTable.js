@@ -7,8 +7,9 @@
  */
 
 import 'bulma/css/bulma.css'
-import { useState, useCallback, useRef } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useModal } from '../utils/modal'
 
 // query
 import { useQuery, useMutation } from '@apollo/client'
@@ -19,43 +20,6 @@ import React from 'react'
 
 // components
 import Loading from './Loading.js'
-
-function useModal() {
-  const ref = useRef(null)
-
-  const showModal = useCallback(() => {
-    console.log('open')
-    if (ref.current !== null) {
-      ref.current.showModal()
-    }
-  }, [])
-
-  const closeModal = useCallback(() => {
-    console.log('close')
-    if (ref.current !== null) {
-      ref.current.close()
-    }
-  }, [])
-
-  return { ref, showModal, closeModal }
-}
-
-function Dialog() {
-  const { message, onOk, onCancel } = props
-
-  return (
-    <dialog ref={ref}>
-      {message}
-      <br />
-      <button type="button" onClick={onOk}>
-        OK
-      </button>
-      <button type="button" onClick={onCancel}>
-        Cancel
-      </button>
-    </dialog>
-  )
-}
 
 function VideoRow(props) {
   const { id, title, name, path, onDelete } = props

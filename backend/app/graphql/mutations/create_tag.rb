@@ -11,11 +11,17 @@ module Mutations
     argument :name, String, required: true
 
     def resolve(name:)
-      Tag.transaction {
-        tag = Tag.create!(name: name)
+      tag = Tag.new(name: name)
 
-        { tag: tag }
-      }
+      if tag.valid?
+        Tag.transaction {
+          tag.save!
+
+          { tag: tag }
+        }
+      else
+        raise GraphQL::ExecutionError.new("invalid tag: #{tag.name}", extensions: { code: Error::GraphqlError.codes[:invalid] })
+      end
     end
   end
 end

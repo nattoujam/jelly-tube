@@ -14,8 +14,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MyHeader from './components/Header.js'
 
 // views
-import AdminArea from './views/AdminArea.js'
 import Home from './views/Home.js'
+import VideoList from './views/VideoList.js'
+import TagList from './views/TagList.js'
 import UploadVideo from './views/UploadVideo.js'
 
 function App() {
@@ -26,8 +27,9 @@ function App() {
         <MyHeader />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/admin" element={<AdminArea />} />
-          <Route path="/admin/upload" element={<UploadVideo />} />
+          <Route path="/upload" element={<UploadVideo />} />
+          <Route path="/admin/video/list" element={<VideoList />} />
+          <Route path="/admin/tag/list" element={<TagList />} />
         </Routes>
       </div>
     </BrowserRouter>
