@@ -10,7 +10,7 @@ module Mutations
     def resolve(title:, movie:, thumnail:, tag_ids:)
       Video.transaction {
         tags = Tag.find(tag_ids)
-        video = Video.create!(title: title, tags: tags)
+        video = Video.create!(title: title, tag_ids: tag_ids)
 
         VideoFile.transaction {
           video.create_video_file! unless video.video_file

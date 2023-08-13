@@ -12,11 +12,12 @@ import { useNavigate } from 'react-router-dom'
 // components
 import Dropzone from '../components/Dropzone.js'
 import { OtherMovie } from '../components/Movie.js'
+import CreateTagForm from '../components/CreateTagForm.js'
 
 // query
 import { useQuery, useMutation } from '@apollo/client'
 import { GET_TAGS } from '../graphql/query.js'
-import { CREATE_VIDEO, CREATE_TAG } from '../graphql/mutation.js'
+import { CREATE_VIDEO } from '../graphql/mutation.js'
 
 function Banner(props) {
   if (props.status === 'success') {
@@ -83,43 +84,8 @@ function TagSelectBox(props) {
   )
 }
 
-function TagCreate(props) {
-  const { onCreate } = props
-  const [newTagName, setNewTagName] = useState('')
-
-  function handleClick(name) {
-    onCreate(name)
-    setNewTagName('')
-  }
-
-  return (
-    <>
-      <div className="field has-addons">
-        <div className="control">
-          <input
-            className="input"
-            type="text"
-            placeholder="tag"
-            value={newTagName}
-            onChange={(e) => setNewTagName(e.target.value)}
-          />
-        </div>
-        <div className="control">
-          <button
-            className="button"
-            disabled={newTagName === ''}
-            onClick={() => handleClick(newTagName)}
-          >
-            Create
-          </button>
-        </div>
-      </div>
-    </>
-  )
-}
-
 function TagForm(props) {
-  const { selectedTags, availableTags, onSelected, onDeleted, onCreate } = props
+  const { selectedTags, availableTags, onSelected, onDeleted, onCreated } = props
 
   return (
     <>
@@ -131,7 +97,7 @@ function TagForm(props) {
           <TagContainer selectedTags={selectedTags} onDeleted={onDeleted} />
         </div>
       </div>
-      <TagCreate onCreate={onCreate} />
+      <CreateTagForm onCreated={onCreated} />
     </>
   )
 }
@@ -279,12 +245,11 @@ function UploadVideo() {
       setStatus('success')
     },
   })
-  const [createTag, { createTagLoading, createTagError }] = useMutation(CREATE_TAG)
 
   if (loading) return <p>Loading tags...</p>
   if (error) return <p>Error</p>
 
-  function handleSelectTag(selectingTagId) {
+  function handleSelectedTag(selectingTagId) {
     const tag = data.tags.find((t) => t.id === selectingTagId)
     if (!selectedTags.includes(tag)) {
       setSelectedTags([...selectedTags, tag])
@@ -294,20 +259,12 @@ function UploadVideo() {
     }
   }
 
-  function handleDeleteTag(deletingTagId) {
+  function handleDeletedTag(deletingTagId) {
     setSelectedTags(selectedTags.filter((t) => t.id !== deletingTagId))
   }
 
-  function handleCreateTag(newTagName) {
-    createTag({
-      variables: {
-        name: newTagName,
-      },
-      onCompleted: (d) => {
-        console.log(d)
-        refetch()
-      },
-    })
+  function handleCreatedTag() {
+    refetch()
   }
 
   function handleFile(file) {
@@ -362,9 +319,9 @@ function UploadVideo() {
                 <TagForm
                   selectedTags={selectedTags}
                   availableTags={data.tags}
-                  onSelected={handleSelectTag}
-                  onDeleted={handleDeleteTag}
-                  onCreate={handleCreateTag}
+                  onSelected={handleSelectedTag}
+                  onDeleted={handleDeletedTag}
+                  onCreated={handleCreatedTag}
                 />
               </div>
             </div>

@@ -9,6 +9,7 @@
 import { Link } from "react-router-dom";
 
 // components
+import AdminTabs from '../components/AdminTabs.js';
 import VideoTable from '../components/VideoTable.js';
 
 function UploadVideoButton() {
@@ -17,14 +18,15 @@ function UploadVideoButton() {
   );
 }
 
-function AdminArea() {
+function VideoList() {
   return (
     <main className='section'>
-      <h1 className='title'>Admin Area</h1>
+      <AdminTabs tab='videos'/>
+      <h1 className='title'>Videos</h1>
       <VideoTable />
       <UploadVideoButton />
     </main>
   );
 }
 
-export default AdminArea;
+export default VideoList;
