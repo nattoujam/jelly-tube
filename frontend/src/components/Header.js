@@ -13,13 +13,14 @@ import { useState } from 'react';
 
 function MyHeader(props) {
   const [ active, setActive ] = useState(false);
+  const headerStyle = {position: 'sticky', width: '100%', top: '0', zIndex: '999'}
 
   function handleClick() {
     setActive(!active);
   }
 
   return (
-    <header className="hero is-small is-dark is-bold">
+    <header className="hero is-small is-dark is-bold" style={headerStyle}>
       <div className="hero-body">
         <nav className='navbar' role='navigation' aria-label='main navigation'>
           <div className='navbar-brand'>

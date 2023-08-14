@@ -94,7 +94,7 @@ function Home() {
   console.log(data)
 
   return (
-    <main className="section">
+    <div className='section'>
       <div className="columns is-vcenterd">
         {selectedMovie != null ? (
           <div className="column is-10">
@@ -126,7 +126,7 @@ function Home() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   )
   // }}}
 }

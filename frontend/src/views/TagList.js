@@ -112,11 +112,11 @@ function TagRow(props) {
 
 function TagList() {
   return (
-    <main className='section'>
+    <div className='section'>
       <AdminTabs tab='tags'/>
       <h1 className='title'>Tag List</h1>
       <TagTable />
-    </main>
+    </div>
   );
 }
 

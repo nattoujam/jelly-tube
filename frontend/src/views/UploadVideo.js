@@ -302,72 +302,70 @@ function UploadVideo() {
   if (mutateError) return <p>Error</p>
 
   return (
-    <>
-      <div className="section">
-        <h1 className="title">Upload Video</h1>
-        <div className="tile is-ancestor">
-          <div className="tile is-parent is-vertical is-8">
-            <div className="tile is-child">
-              <label className="label">Title</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="tile is-child">
-              <label className="label">タグ</label>
-              <div className="control">
-                <TagForm
-                  selectedTags={selectedTags}
-                  availableTags={data.tags}
-                  onSelected={handleSelectedTag}
-                  onDeleted={handleDeletedTag}
-                  onCreated={handleCreatedTag}
-                />
-              </div>
-            </div>
-            <div className="tile is-child">
-              <label className="label">サムネイル選択</label>
-              <div className="box">
-                <ThumnailGenerator file={file} onSelected={handleSelected} />
-              </div>
+    <div className="section">
+      <h1 className="title">Upload Video</h1>
+      <div className="tile is-ancestor">
+        <div className="tile is-parent is-vertical is-8">
+          <div className="tile is-child">
+            <label className="label">Title</label>
+            <div className="control">
+              <input
+                className="input"
+                type="text"
+                placeholder="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
           </div>
-          <div className="tile is-parent is-vertical">
-            <div className="tile is-child">
-              <label className="label">動画投稿欄</label>
-              <Dropzone handleFile={handleFile} />
+          <div className="tile is-child">
+            <label className="label">タグ</label>
+            <div className="control">
+              <TagForm
+                selectedTags={selectedTags}
+                availableTags={data.tags}
+                onSelected={handleSelectedTag}
+                onDeleted={handleDeletedTag}
+                onCreated={handleCreatedTag}
+              />
             </div>
-            <div className="tile is-child">
-              <label className="label">プレビュー</label>
-              <Preview videoFile={file} />
+          </div>
+          <div className="tile is-child">
+            <label className="label">サムネイル選択</label>
+            <div className="box">
+              <ThumnailGenerator file={file} onSelected={handleSelected} />
             </div>
           </div>
         </div>
-        <div className="field is-grouped">
-          <div className="control">
-            <button
-              className="button is-link"
-              onClick={handleSubmit}
-              disabled={status === 'uploading'}
-            >
-              Submit
-            </button>
+        <div className="tile is-parent is-vertical">
+          <div className="tile is-child">
+            <label className="label">動画投稿欄</label>
+            <Dropzone handleFile={handleFile} />
           </div>
-          <div className="control">
-            <button className="button is-link is-light" onClick={() => navigate(-1)}>
-              Cancel
-            </button>
+          <div className="tile is-child">
+            <label className="label">プレビュー</label>
+            <Preview videoFile={file} />
           </div>
         </div>
-        <Banner status={status} title={title} />
       </div>
-    </>
+      <div className="field is-grouped">
+        <div className="control">
+          <button
+            className="button is-link"
+            onClick={handleSubmit}
+            disabled={status === 'uploading'}
+          >
+            Submit
+          </button>
+        </div>
+        <div className="control">
+          <button className="button is-link is-light" onClick={() => navigate(-1)}>
+            Cancel
+          </button>
+        </div>
+      </div>
+      <Banner status={status} title={title} />
+    </div>
   )
 }
 

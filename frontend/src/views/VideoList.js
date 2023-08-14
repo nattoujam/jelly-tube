@@ -20,12 +20,12 @@ function UploadVideoButton() {
 
 function VideoList() {
   return (
-    <main className='section'>
+    <div className='section'>
       <AdminTabs tab='videos'/>
       <h1 className='title'>Video List</h1>
       <VideoTable />
       <UploadVideoButton />
-    </main>
+    </div>
   );
 }
 

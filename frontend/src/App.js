@@ -23,7 +23,7 @@ function App() {
   // {{{
   return (
     <BrowserRouter>
-      <div className="App">
+      <main className="App">
         <MyHeader />
         <Routes>
           <Route exact path="/" element={<Home />} />
@@ -31,7 +31,7 @@ function App() {
           <Route path="/admin/video/list" element={<VideoList />} />
           <Route path="/admin/tag/list" element={<TagList />} />
         </Routes>
-      </div>
+      </main>
     </BrowserRouter>
   )
   // }}}
