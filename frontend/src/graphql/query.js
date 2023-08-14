@@ -21,6 +21,7 @@ export const GET_VIDEOS = gql`
         path
       }
       tags {
+        id
         name
       }
     }

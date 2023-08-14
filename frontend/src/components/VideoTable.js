@@ -22,7 +22,7 @@ import React from 'react'
 import Loading from './Loading.js'
 
 function VideoRow(props) {
-  const { id, title, name, path, onDelete } = props
+  const { id, title, name, tags, onDelete } = props
 
   function handleClick(e) {
     onDelete(id)
@@ -33,16 +33,20 @@ function VideoRow(props) {
       <th>{id}</th>
       <td>{title}</td>
       <td>{name}</td>
-      <td className="txt-limit">{path}</td>
       <td>
-        <Link className="button" to="/admin/edit">
-          Edit
-        </Link>
+        <div className='tags'>
+          {tags.map(tag => <span key={`${id}-${tag.id}`} className='tag'>{tag.name}</span>)}
+        </div>
       </td>
       <td>
-        <button className="button is-danger" onClick={handleClick}>
-          Delete
-        </button>
+        <div className='buttons'>
+          <Link className="button is-small" to="/admin/edit">
+            Edit
+          </Link>
+          <button className="button is-danger is-small" onClick={handleClick}>
+            Delete
+          </button>
+        </div>
       </td>
     </tr>
   )
@@ -86,8 +90,7 @@ function VideoTable() {
             <th>ID</th>
             <th>Title</th>
             <th>Name</th>
-            <th>Path</th>
-            <th></th>
+            <th>Tags</th>
             <th></th>
           </tr>
         </thead>
@@ -96,18 +99,15 @@ function VideoTable() {
             <th>ID</th>
             <th>Title</th>
             <th>Name</th>
-            <th>Path</th>
-            <th></th>
+            <th>Tags</th>
             <th></th>
           </tr>
         </tfoot>
         <tbody>
           {data.videos.map((c) => {
             let name = '-'
-            let path = '-'
             if (c.videoFile !== null) {
               name = c.videoFile.name
-              path = c.videoFile.path
             }
             return (
               <VideoRow
@@ -115,7 +115,7 @@ function VideoTable() {
                 id={c.id}
                 title={c.title}
                 name={name}
-                path={path}
+                tags={c.tags}
                 onDelete={(id) => handleDeleting(id)}
               />
             )
