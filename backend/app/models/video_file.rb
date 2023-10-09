@@ -11,7 +11,8 @@ class VideoFile < ApplicationRecord
   def path
     return '' unless media.attached?
 
-    url_for(media)
+    # url_for(media)
+    return "#{Rails.configuration.s3_url}/video/#{video.id}"
   end
 
   def content_type
