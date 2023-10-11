@@ -15,6 +15,15 @@ local:
 #   region: us-east-1
 #   bucket: your_own_bucket-<%= Rails.env %>
 
+development:
+  service: S3
+  access_key_id: <%= ENV['MINIO_ACCESS_KEY'] %>
+  secret_access_key: <%= ENV['MINIO_SECRET_KEY'] %>
+  region: "us-east-1"
+  endpoint: "http://minio:9000"
+  bucket: develop.static.jelly-fish.local
+  force_path_style: true
+
 # Remember not to checkin your GCS keyfile to a repository
 # google:
 #   service: GCS
