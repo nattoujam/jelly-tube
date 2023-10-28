@@ -54,3 +54,4 @@ services:
       - type: bind
         source: ../minio
         target: /export
+    restart: always
