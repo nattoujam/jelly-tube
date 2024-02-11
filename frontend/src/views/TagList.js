@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import { useModal } from '../utils/modal'
 
 // graphql
@@ -73,7 +73,7 @@ function TagTable() {
           })}
         </tbody>
       </table>
-      <CreateTagForm onCreated={handleCreated}/>
+      <CreateTagForm onCreated={handleCreated} />
       <dialog ref={ref}>
         Delete ?<br />
         <button type="button" onClick={handleDelete}>
@@ -96,10 +96,12 @@ function TagRow(props) {
 
   return (
     <tr>
-      <td><span className='tag'>{name}</span></td>
+      <td>
+        <span className="tag">{name}</span>
+      </td>
       <td>{count}</td>
       <td>
-        <div className='buttons'>
+        <div className="buttons">
           <button className="button is-danger is-small" onClick={handleClick}>
             Delete
           </button>
@@ -109,15 +111,21 @@ function TagRow(props) {
   )
 }
 
+TagRow.propTypes = {
+  id: PropTypes.number,
+  name: PropTypes.string,
+  count: PropTypes.number,
+  onDelete: PropTypes.function,
+}
 
 function TagList() {
   return (
-    <div className='section'>
-      <AdminTabs tab='tags'/>
-      <h1 className='title'>Tag List</h1>
+    <div className="section">
+      <AdminTabs tab="tags" />
+      <h1 className="title">Tag List</h1>
       <TagTable />
     </div>
-  );
+  )
 }
 
-export default TagList;
+export default TagList

@@ -8,6 +8,7 @@
 
 import 'bulma/css/bulma.css'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { useModal } from '../utils/modal'
 
@@ -15,8 +16,6 @@ import { useModal } from '../utils/modal'
 import { useQuery, useMutation } from '@apollo/client'
 import { GET_VIDEOS } from '../graphql/query.js'
 import { DELETE_VIDEO } from '../graphql/mutation.js'
-
-import React from 'react'
 
 // components
 import Loading from './Loading.js'
@@ -34,12 +33,16 @@ function VideoRow(props) {
       <td>{title}</td>
       <td>{name}</td>
       <td>
-        <div className='tags'>
-          {tags.map(tag => <span key={`${id}-${tag.id}`} className='tag'>{tag.name}</span>)}
+        <div className="tags">
+          {tags.map((tag) => (
+            <span key={`${id}-${tag.id}`} className="tag">
+              {tag.name}
+            </span>
+          ))}
         </div>
       </td>
       <td>
-        <div className='buttons'>
+        <div className="buttons">
           <Link className="button is-small" to="/admin/edit">
             Edit
           </Link>
@@ -50,6 +53,14 @@ function VideoRow(props) {
       </td>
     </tr>
   )
+}
+
+VideoRow.propTypes = {
+  id: PropTypes.number,
+  title: PropTypes.string,
+  name: PropTypes.string,
+  tags: PropTypes.array,
+  onDelete: PropTypes.function,
 }
 
 function VideoTable() {

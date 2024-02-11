@@ -7,6 +7,7 @@
  */
 
 import { useEffect, useMemo, useRef } from 'react'
+import PropTypes from 'prop-types'
 import Hls from 'hls.js'
 
 const movieStyle = {
@@ -14,16 +15,17 @@ const movieStyle = {
 }
 
 export function Movie(props) {
-  console.log('url=' + props.src)
-  const tags = props.tags
+  const { src, tags, title } = props
+
+  console.log('url=' + src)
 
   return (
     <>
       <div className="card">
         <div className="card-image has-text-centered has-background-black">
-          {props.src.match(/\.m3u8$/) ? <HLSMovie {...props} /> : <OtherMovie {...props} />}
+          {src.match(/\.m3u8$/) ? <HLSMovie {...props} /> : <OtherMovie {...props} />}
         </div>
-        <div className="is-size-3 card-content">{props.title}</div>
+        <div className="is-size-3 card-content">{title}</div>
         <footer className="card-footer">
           {tags
             .sort((t1, t2) => t1 > t2)
@@ -40,6 +42,12 @@ export function Movie(props) {
   )
 }
 
+Movie.propTypes = {
+  src: PropTypes.string,
+  tags: PropTypes.array,
+  title: PropTypes.string,
+}
+
 export function OtherMovie(props) {
   const { src } = props
 
@@ -54,6 +62,10 @@ export function OtherMovie(props) {
   )
 }
 
+OtherMovie.propTypes = {
+  src: PropTypes.string,
+}
+
 export function HLSMovie(props) {
   // {{{
   const { src } = props
@@ -66,7 +78,7 @@ export function HLSMovie(props) {
   const videoRef = useRef(null)
   useEffect(() => {
     if (isSupportBrowser) {
-      var hls = new Hls()
+      const hls = new Hls()
       hls.loadSource(src)
       hls.attachMedia(videoRef.current)
       return () => {
@@ -86,4 +98,8 @@ export function HLSMovie(props) {
     </>
   )
   // }}}
+}
+
+HLSMovie.propTypes = {
+  src: PropTypes.string,
 }

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { CREATE_TAG } from '../graphql/mutation.js'
@@ -5,7 +6,7 @@ import { CREATE_TAG } from '../graphql/mutation.js'
 function CreateTagForm(props) {
   const { onCreated } = props
   const [newTagName, setNewTagName] = useState('')
-  const [createTag, { createTagLoading, createTagError }] = useMutation(CREATE_TAG)
+  const [createTag] = useMutation(CREATE_TAG)
 
   function handleClick(name) {
     createTag({
@@ -43,6 +44,10 @@ function CreateTagForm(props) {
       </div>
     </>
   )
+}
+
+CreateTagForm.propTypes = {
+  onCreated: PropTypes.function,
 }
 
 export default CreateTagForm

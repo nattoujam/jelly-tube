@@ -7,12 +7,14 @@
  */
 
 import { useState, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 
 // components
 import Dropzone from '../components/Dropzone.js'
 import { OtherMovie } from '../components/Movie.js'
 import CreateTagForm from '../components/CreateTagForm.js'
+import Loading from '../components/Loading.js'
 
 // query
 import { useQuery, useMutation } from '@apollo/client'
@@ -20,7 +22,8 @@ import { GET_TAGS } from '../graphql/query.js'
 import { CREATE_VIDEO } from '../graphql/mutation.js'
 
 function Banner(props) {
-  if (props.status === 'success') {
+  const { status, title } = props
+  if (status === 'success') {
     return (
       <section className="hero is-success is-small">
         <div className="hero-body">
@@ -28,18 +31,23 @@ function Banner(props) {
         </div>
       </section>
     )
-  } else if (props.status === 'uploading') {
+  } else if (status === 'uploading') {
     return (
       <footer className="hero is-warning is-small">
         <div className="hero-body">
           <p className="title">Uploading...</p>
-          <p className="subtitle">title = {props.title}</p>
+          <p className="subtitle">title = {title}</p>
         </div>
       </footer>
     )
   } else {
     return <></>
   }
+}
+
+Banner.propTypes = {
+  status: PropTypes.string,
+  title: PropTypes.string,
 }
 
 function TagContainer(props) {
@@ -59,6 +67,11 @@ function TagContainer(props) {
       </div>
     </>
   )
+}
+
+TagContainer.propTypes = {
+  selectedTags: PropTypes.array,
+  onDeleted: PropTypes.function,
 }
 
 function TagSelectBox(props) {
@@ -90,6 +103,11 @@ function TagSelectBox(props) {
   )
 }
 
+TagSelectBox.propTypes = {
+  availableTags: PropTypes.array,
+  onSelected: PropTypes.function,
+}
+
 function TagForm(props) {
   const { selectedTags, availableTags, onSelected, onDeleted, onCreated } = props
 
@@ -108,8 +126,21 @@ function TagForm(props) {
   )
 }
 
+TagForm.propTypes = {
+  selectedTags: PropTypes.array,
+  availableTags: PropTypes.array,
+  onSelected: PropTypes.function,
+  onDeleted: PropTypes.function,
+  onCreated: PropTypes.function,
+}
+
+ThumnailGenerator.propTypes = {
+  file: PropTypes.string,
+  onSelected: PropTypes.function,
+}
+
 function ThumnailGenerator(props) {
-  const { file } = props
+  const { file, onSelected } = props
   const w = 320
   const h = 180
   let max = 0
@@ -118,7 +149,6 @@ function ThumnailGenerator(props) {
   const canvasRef = useRef(null)
   const [thumnail, setThumnail] = useState(null)
   const [holdThumnail, setHoldThumnail] = useState(null)
-  const onSelected = props.onSelected
 
   useEffect(() => {
     console.log('set context' + canvasRef.current)
@@ -145,7 +175,7 @@ function ThumnailGenerator(props) {
           }
         },
         'image/jpeg',
-        0.75
+        0.75,
       )
     }
   }
@@ -232,6 +262,10 @@ function Preview(props) {
   }
 }
 
+Preview.propTypes = {
+  videoFile: PropTypes.string,
+}
+
 function UploadVideo() {
   const [title, setTitle] = useState('')
   const [file, setFile] = useState(null)
@@ -242,7 +276,7 @@ function UploadVideo() {
   const { data, loading, error, refetch } = useQuery(GET_TAGS)
   const [mutate, { mutateLoading, mutateError }] = useMutation(CREATE_VIDEO, {
     variables: {
-      title: title,
+      title,
       movie: file,
       thumnail: thumnailFile,
       tagIds: selectedTags.map((t) => parseInt(t.id)),
@@ -292,10 +326,6 @@ function UploadVideo() {
     const iFile = new File([thumnailBlob], name, { type: thumnailBlob.type })
     console.log(iFile)
     setThumnailFile(iFile)
-  }
-
-  function nop() {
-    console.log('nop')
   }
 
   if (mutateLoading) return <Loading />

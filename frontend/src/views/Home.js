@@ -8,6 +8,7 @@
 
 import 'bulma/css/bulma.css'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 // query
 import { useQuery } from '@apollo/client'
@@ -19,23 +20,24 @@ import { Movie } from '../components/Movie.js'
 
 function MovieIcon(props) {
   // {{{
-  const { id, title, thumnailURL, playCount, onClick } = props
+  const { id, title, thumnailURL, onClick } = props
 
   return (
     <div className="card">
       <div className="card-image">
-        <img
-          src={thumnailURL}
-          width="100%"
-          height="100%"
-          alt={title}
-          onClick={() => onClick(id)}
-        />
+        <img src={thumnailURL} width="100%" height="100%" alt={title} onClick={() => onClick(id)} />
       </div>
       <div className="card-content p-3 is-size-6">{title}</div>
     </div>
   )
   // }}}
+}
+
+MovieIcon.propTypes = {
+  id: PropTypes.number,
+  title: PropTypes.string,
+  thumnailURL: PropTypes.string,
+  onClick: PropTypes.function,
 }
 
 function Gallery(props) {
@@ -51,18 +53,18 @@ function Gallery(props) {
       {contents.map((c) => {
         return (
           <div key={c.id} className={`column is-${maxRowCount}`}>
-            <MovieIcon
-              id={c.id}
-              title={c.title}
-              thumnailURL={c.thumnail.path}
-              onClick={onClick}
-            />
+            <MovieIcon id={c.id} title={c.title} thumnailURL={c.thumnail.path} onClick={onClick} />
           </div>
         )
       })}
     </div>
   )
   // }}}
+}
+Gallery.propTypes = {
+  contents: PropTypes.array,
+  maxRowCount: PropTypes.number,
+  onClick: PropTypes.function,
 }
 
 function Home() {
@@ -73,7 +75,6 @@ function Home() {
 
   if (loading) return <Loading />
   if (error) return <p>Error</p>
-
 
   function calcMaxRowCount() {
     // bulmaのcolumnで、何個まで横にならべるかきめるやつ
@@ -87,14 +88,14 @@ function Home() {
   }
 
   function handleClick(id) {
-    setSelectedMovie(data.videos.find((v) => v.id == id))
-    setUnselectedMovies(data.videos.filter((v) => v.id != id))
+    setSelectedMovie(data.videos.find((v) => v.id === id))
+    setUnselectedMovies(data.videos.filter((v) => v.id !== id))
   }
 
   console.log(data)
 
   return (
-    <div className='section'>
+    <div className="section">
       <div className="columns is-vcenterd">
         {selectedMovie != null ? (
           <div className="column is-10">

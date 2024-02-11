@@ -7,6 +7,7 @@
  */
 
 import React, { useMemo, useCallback } from 'react'
+import PropTypes from 'prop-types'
 import { useDropzone } from 'react-dropzone'
 
 const baseStyle = {
@@ -38,23 +39,18 @@ const rejectStyle = {
 }
 
 function Dropzone(props) {
+  const { handleFile } = props
+
   const onDrop = useCallback((files) => {
-    props.handleFile(files[0])
+    handleFile(files[0])
   })
 
-  const {
-    acceptedFiles,
-    getRootProps,
-    getInputProps,
-    open,
-    isFocused,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
-    accept: { 'video/*': ['.mp4'] },
-    onDrop,
-    maxFiles: 1,
-  })
+  const { acceptedFiles, getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
+    useDropzone({
+      accept: { 'video/*': ['.mp4'] },
+      onDrop,
+      maxFiles: 1,
+    })
 
   const files = acceptedFiles.map((file) => (
     <p key={file.path}>
@@ -69,7 +65,7 @@ function Dropzone(props) {
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isFocused, isDragAccept, isDragReject]
+    [isFocused, isDragAccept, isDragReject],
   )
 
   return (
@@ -77,12 +73,16 @@ function Dropzone(props) {
       <section className="container">
         <div {...getRootProps({ style })}>
           <input {...getInputProps()} />
-          <p>Drag 'n' drop a file here, or click to select a file</p>
+          <p>Drag and drop a file here, or click to select a file</p>
         </div>
         <aside>{files}</aside>
       </section>
     </>
   )
+}
+
+Dropzone.propTypes = {
+  handleFile: PropTypes.function,
 }
 
 export default Dropzone
