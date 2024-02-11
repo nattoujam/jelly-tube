@@ -6,7 +6,6 @@
  * Last Modified By  : nattoujam <public.kyuuanago@gmail.com>
  */
 
-import logo from '../logo.svg'
 import '../App.css'
 import 'bulma/css/bulma.css'
 import { useState } from 'react'
@@ -25,7 +24,6 @@ function MyHeader(props) {
         <nav className="navbar" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
             <a className="navbar-item" href="/">
-              <img src={logo} className="App-logo" alt="logo" />
               <h1 className="title">Jelly-Tube</h1>
             </a>
             <button

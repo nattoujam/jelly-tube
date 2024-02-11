@@ -13,7 +13,7 @@ services:
       - type: bind
         source: ../config/env_front
         target: /usr/src/app/.env
-    command: sh -c "yarn install && yarn start"
+    command: sh -c "npm i && npm run build && npm run prod"
     ports:
       - '3000:3000'
     stdin_open: true
