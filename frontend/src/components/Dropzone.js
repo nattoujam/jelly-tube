@@ -82,7 +82,7 @@ function Dropzone(props) {
 }
 
 Dropzone.propTypes = {
-  handleFile: PropTypes.function,
+  handleFile: PropTypes.func,
 }
 
 export default Dropzone

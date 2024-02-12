@@ -112,10 +112,10 @@ function TagRow(props) {
 }
 
 TagRow.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   name: PropTypes.string,
   count: PropTypes.number,
-  onDelete: PropTypes.function,
+  onDelete: PropTypes.func,
 }
 
 function TagList() {

@@ -47,7 +47,7 @@ function CreateTagForm(props) {
 }
 
 CreateTagForm.propTypes = {
-  onCreated: PropTypes.function,
+  onCreated: PropTypes.func,
 }
 
 export default CreateTagForm

@@ -56,11 +56,11 @@ function VideoRow(props) {
 }
 
 VideoRow.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   title: PropTypes.string,
   name: PropTypes.string,
   tags: PropTypes.array,
-  onDelete: PropTypes.function,
+  onDelete: PropTypes.func,
 }
 
 function VideoTable() {

@@ -34,10 +34,10 @@ function MovieIcon(props) {
 }
 
 MovieIcon.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   title: PropTypes.string,
   thumnailURL: PropTypes.string,
-  onClick: PropTypes.function,
+  onClick: PropTypes.func,
 }
 
 function Gallery(props) {
@@ -64,7 +64,7 @@ function Gallery(props) {
 Gallery.propTypes = {
   contents: PropTypes.array,
   maxRowCount: PropTypes.number,
-  onClick: PropTypes.function,
+  onClick: PropTypes.func,
 }
 
 function Home() {

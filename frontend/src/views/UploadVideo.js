@@ -71,7 +71,7 @@ function TagContainer(props) {
 
 TagContainer.propTypes = {
   selectedTags: PropTypes.array,
-  onDeleted: PropTypes.function,
+  onDeleted: PropTypes.func,
 }
 
 function TagSelectBox(props) {
@@ -105,7 +105,7 @@ function TagSelectBox(props) {
 
 TagSelectBox.propTypes = {
   availableTags: PropTypes.array,
-  onSelected: PropTypes.function,
+  onSelected: PropTypes.func,
 }
 
 function TagForm(props) {
@@ -129,14 +129,14 @@ function TagForm(props) {
 TagForm.propTypes = {
   selectedTags: PropTypes.array,
   availableTags: PropTypes.array,
-  onSelected: PropTypes.function,
-  onDeleted: PropTypes.function,
-  onCreated: PropTypes.function,
+  onSelected: PropTypes.func,
+  onDeleted: PropTypes.func,
+  onCreated: PropTypes.func,
 }
 
 ThumnailGenerator.propTypes = {
   file: PropTypes.string,
-  onSelected: PropTypes.function,
+  onSelected: PropTypes.func,
 }
 
 function ThumnailGenerator(props) {
