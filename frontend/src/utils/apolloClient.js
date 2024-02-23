@@ -7,7 +7,7 @@
  */
 
 import { ApolloClient, InMemoryCache } from '@apollo/client'
-import { createUploadLink } from 'apollo-upload-client'
+import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
 
 const link = createUploadLink({
   uri: `${process.env.REACT_APP_API_PROTOCOL}://${process.env.REACT_APP_API_DOMAIN}:${process.env.REACT_APP_API_PORT}/graphql`,
