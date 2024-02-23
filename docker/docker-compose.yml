@@ -10,9 +10,6 @@ services:
       - type: bind
         source: ../frontend
         target: /usr/src/app
-      - type: bind
-        source: ../config/env_front
-        target: /usr/src/app/.env
     command: sh -c "npm i && npm run build && npm run prod"
     ports:
       - '3000:3000'
@@ -31,9 +28,6 @@ services:
       - type: bind
         source: ../backend
         target: /app
-      - type: bind
-        source: ../config/env_backend.yml
-        target: /app/local_config/local_env.yml
     command: /bin/sh -c "bundle install && rails db:migrate && rm -f tmp/pids/server.pid && bundle exec rails s -p 3333 -b '0.0.0.0'"
     ports:
       - '3333:3333'
