@@ -12,7 +12,8 @@ class Thumnail < ApplicationRecord
     return '' unless image.attached?
 
     # url_for(image)
-    return "#{Rails.configuration.s3_url}/thumnail/#{video.id}"
+    ext = File.extname(name)
+    return "#{Rails.configuration.s3_url}/thumnail/#{video.id}#{ext}"
   end
 
   def content_type

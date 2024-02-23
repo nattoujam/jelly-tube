@@ -1,0 +1,10 @@
+FROM python:3.10.13-slim-bullseye
+
+RUN mkdir /app
+WORKDIR /app
+
+RUN apt update && apt install -y git ffmpeg
+
+RUN pip install git+https://github.com/nattoujam/webhookpy.git@dev
+RUN webhook add dev https://hooks.slack.com/services/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 dev JellyTube-notifier --default
+RUN webhook add jelly-tube https://hooks.slack.com/services/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 jelly-tube JellyTube-notifier
