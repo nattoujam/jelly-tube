@@ -57,6 +57,23 @@ services:
     networks:
       - backend
 
+  lambda:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile_l
+    image: 'jelly-tube/lambda'
+    container_name: 'jelly-tube-lambda'
+    ports:
+      - '5000:5000'
+    command: sh -c 'pip install -r requirements.txt && python3 main.py'
+    volumes:
+      - type: bind
+        source: ../m3u8uploader
+        target: /app
+    restart: always
+    networks:
+      - backend
+
 networks:
   frontend:
     name: jelly-tube-frontend
