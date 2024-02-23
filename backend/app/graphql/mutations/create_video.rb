@@ -15,14 +15,16 @@ module Mutations
         VideoFile.transaction {
           video.create_video_file! unless video.video_file
           # ApolloUploadServer::Uploadをそのまま渡せないのでioとfilenameを渡す
-          video.video_file.media.attach(key: "video/#{video.id}", io: movie.to_io, filename: movie.original_filename)
+          ext = File.extname(movie.original_filename)
+          video.video_file.media.attach(key: "video/#{video.id}#{ext}", io: movie.to_io, filename: movie.original_filename)
           video.video_file
         }
 
         Thumnail.transaction {
           video.create_thumnail! unless video.thumnail
           # ApolloUploadServer::Uploadをそのまま渡せないのでioとfilenameを渡す
-          video.thumnail.image.attach(key: "thumnail/#{video.id}", io: thumnail.to_io, filename: thumnail.original_filename)
+          ext = File.extname(thumnail.original_filename)
+          video.thumnail.image.attach(key: "thumnail/#{video.id}#{ext}", io: thumnail.to_io, filename: thumnail.original_filename)
           video.thumnail
         }
 
