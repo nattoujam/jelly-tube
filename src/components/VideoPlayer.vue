@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { type Ref, ref, onMounted, onBeforeUnmount } from 'vue'
+import { type Ref, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 
@@ -17,7 +17,7 @@ const props = defineProps<{
   contentType: string
 }>()
 
-onMounted(() => {
+const setupPlayer = () => {
   const options = {
     controls: true,
     muted: true,
@@ -29,17 +29,24 @@ onMounted(() => {
     ]
   }
 
-  console.log(options)
   player = videojs(videoRef.value, options, () => {
-    console.log('mounted player')
+    console.log('player is ready')
   })
+}
+
+watch(
+  () => props.url,
+  () => {
+    player?.src({ src: props.url, type: props.contentType })
+  }
+)
+
+onMounted(() => {
+  setupPlayer()
 })
 
 onBeforeUnmount(() => {
-  if (player) {
-    player.dispose()
-    console.log('dispose player')
-  }
+  player?.dispose()
 })
 </script>
 
