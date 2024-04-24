@@ -1,6 +1,11 @@
 <template>
   <div class="video-wrapper">
-    <video ref="videoRef" class="player video-js vjs-16-9"></video>
+    <video
+      ref="videoRef"
+      class="player video-js vjs-16-9"
+      @seeked="(e) => emit('video-seeked', e.timeStamp)"
+      @play="() => emit('video-play')"
+    ></video>
   </div>
 </template>
 
@@ -10,17 +15,25 @@ import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 
 let player: any = null
-const videoRef: Ref<string | Element> = ref('')
+const videoRef: Ref<HTMLVideoElement | null> = ref(null)
 
 const props = defineProps<{
   url: string
   contentType: string
+  muted?: boolean
+}>()
+
+const emit = defineEmits<{
+  'video-update': [videoElement: HTMLVideoElement]
+  'video-seeked': [time: number]
+  'video-play': []
 }>()
 
 const setupPlayer = () => {
   const options = {
     controls: true,
-    muted: true,
+    muted: props.muted ?? false,
+    preload: true,
     sources: [
       {
         src: props.url,
@@ -29,15 +42,19 @@ const setupPlayer = () => {
     ]
   }
 
+  if (!videoRef.value) return
+
   player = videojs(videoRef.value, options, () => {
-    console.log('player is ready')
+    if (!videoRef.value) return
+    emit('video-update', videoRef.value)
   })
 }
 
 watch(
   () => props.url,
-  () => {
-    player?.src({ src: props.url, type: props.contentType })
+  (newUrl) => {
+    console.log(newUrl, player)
+    player?.src({ src: newUrl, type: props.contentType })
   }
 )
 
@@ -46,7 +63,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  player?.dispose()
+  if (player) player.dispose()
 })
 </script>
 
