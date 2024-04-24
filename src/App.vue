@@ -1,12 +1,12 @@
 <template>
   <TopSidebar class="sidebar" />
   <main class="flex-column">
-    <RouterView class="main-wrapper" />
+    <RouterView />
   </main>
 </template>
 
 <script setup lang="ts">
-import TopSidebar from '@/components/TopSidebar.vue'
+import TopSidebar from '@/views/TopSidebar.vue'
 </script>
 
 <style scoped>
@@ -18,10 +18,7 @@ import TopSidebar from '@/components/TopSidebar.vue'
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
   overflow-y: scroll;
-}
-.main-wrapper {
   margin: 30px;
 }
 </style>

@@ -17,7 +17,7 @@ import apolloClient from '@/apolloClient'
 const route = useRoute()
 
 const videosQuery = gql`
-  query videosQuery($id: ID!) {
+  query videoQuery($id: ID!) {
     video(id: $id) {
       videoFile {
         path
