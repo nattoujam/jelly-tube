@@ -8,6 +8,26 @@
     </div>
     <div class="field">
       <label class="label">Tags</label>
+      <div class="control">
+        <select class="select" @change="onSelectedTags">
+          <option value="0">{{ INITIAL_SELECT_VALUE }}</option>
+          <option v-for="(tag, index) in tagList" :key="index" :value="tag.id">
+            {{ tag.name }}
+          </option>
+        </select>
+      </div>
+      <div class="control">
+        <div class="tags">
+          <TagIcon
+            v-for="(id, index) in selectedTagIds"
+            :key="index"
+            :tagId="id"
+            :name="tagList.find((tag: any) => tag.id === id).name"
+            withCloseButton
+            @delete="onDeleteTag"
+          />
+        </div>
+      </div>
     </div>
     <div class="field">
       <label class="label">video</label>
@@ -28,20 +48,18 @@
 
 <script setup lang="ts">
 import DropArea from '@/components/DropArea.vue'
+import TagIcon from '@/components/TagIcon.vue'
 import ThumnailGenerator from '@/components/ThumnailGenerator.vue'
 import { type Ref, ref, computed } from 'vue'
 import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
+import { useQuery, provideApolloClient } from '@vue/apollo-composable'
+import apolloClient from '@/apolloClient'
 import { useBanner } from '@/stores/banner'
 
+const INITIAL_SELECT_VALUE = '-- Select --'
+
 const { setBanner } = useBanner()
-
-const title: Ref<string> = ref('')
-const video: Ref<File | null> = ref(null)
-const thumnail: Ref<File | null> = ref(null)
-
-const url = computed(() => (video.value ? URL.createObjectURL(video.value) : null))
-const canUpload = computed(() => Boolean(video.value) && Boolean(thumnail.value))
 
 const createVideoMutation = gql`
   mutation createVideo($title: String!, $movie: Upload!, $thumnail: Upload!, $tagIds: [Int!]!) {
@@ -60,6 +78,25 @@ const {
   onError
 } = useMutation(createVideoMutation)
 
+const tagListQuery = gql`
+  query tagListQuery {
+    tags {
+      id
+      name
+    }
+  }
+`
+const query = provideApolloClient(apolloClient)(() => useQuery(tagListQuery))
+
+const title: Ref<string> = ref('')
+const video: Ref<File | null> = ref(null)
+const thumnail: Ref<File | null> = ref(null)
+const selectedTagIds: Ref<Array<string>> = ref([])
+
+const url = computed(() => (video.value ? URL.createObjectURL(video.value) : null))
+const canUpload = computed(() => Boolean(video.value) && Boolean(thumnail.value))
+const tagList = computed(() => query.result.value?.tags ?? [])
+
 onDone(() => {
   setBanner('Info', 'Succsess', 'upload successful.')
 })
@@ -70,6 +107,15 @@ onError((error) => {
 
 const onChangeTitle = (e: any) => {
   title.value = e.target.value
+}
+
+const onSelectedTags = (e: any) => {
+  if (e.target.value === '0') return
+  selectedTagIds.value.push(e.target.value)
+}
+
+const onDeleteTag = (e: string) => {
+  selectedTagIds.value = selectedTagIds.value.filter((id) => id !== e)
 }
 
 const onDropped = (e: File) => {
@@ -84,7 +130,12 @@ const onSelectedThumnail = (image: Blob) => {
 }
 
 const onUpload = () => {
-  createVideo({ title: title.value, movie: video.value, thumnail: thumnail.value, tagIds: [] })
+  createVideo({
+    title: title.value,
+    movie: video.value,
+    thumnail: thumnail.value,
+    tagIds: selectedTagIds.value.map((tag) => Number.parseInt(tag))
+  })
 }
 </script>
 
