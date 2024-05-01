@@ -7,7 +7,7 @@
     <div class="navbar-brand container">
       <div>
         <RouterLink class="navbar-item" to="/">videos</RouterLink>
-        <RouterLink class="navbar-item" to="/">tags</RouterLink>
+        <RouterLink class="navbar-item" to="/tagList">tags</RouterLink>
         <RouterLink class="navbar-item" to="/upload">upload</RouterLink>
       </div>
     </div>
