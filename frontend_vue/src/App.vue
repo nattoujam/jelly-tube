@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import TopSidebar from '@/views/TopSidebar.vue'
-import TopBanner from './views/TopBanner.vue'
+import TopBanner from '@/views/TopBanner.vue'
 </script>
 
 <style scoped>
