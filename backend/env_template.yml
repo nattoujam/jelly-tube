@@ -5,3 +5,6 @@ FRONTEND_PORT: '3000'
 
 MINIO_ACCESS_KEY: '__access_key__'
 MINIO_SECRET_KEY: '__secret_key__'
+
+S3_BUCKET_NAME: '__name__'
+S3_BUCKET_NAME_M3U8: '__name__'
