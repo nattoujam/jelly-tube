@@ -4,6 +4,7 @@
       <p class="title">{{ title }}</p>
       <p class="subtitle">{{ message }}</p>
     </div>
+    <button class="delete" @click="onDelete"></button>
   </section>
 </template>
 
@@ -33,4 +34,16 @@ const bannerColorClass = computed(() => {
 })
 
 watch(route, () => bannerStore.$reset())
+
+const onDelete = () => {
+  bannerStore.$reset()
+}
 </script>
+
+<style scoped>
+.delete {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+</style>
