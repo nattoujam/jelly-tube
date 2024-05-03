@@ -53,7 +53,6 @@ const setupPlayer = () => {
 watch(
   () => props.url,
   (newUrl) => {
-    console.log(newUrl, player)
     player?.src({ src: newUrl, type: props.contentType })
   }
 )
