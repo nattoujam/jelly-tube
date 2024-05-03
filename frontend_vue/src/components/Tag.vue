@@ -4,8 +4,8 @@
     <button
       v-if="props.withCloseButton"
       class="delete is-small"
-      :value="tagId"
-      @click="emits('delete', tagId)"
+      :value="id"
+      @click="emits('delete', id)"
     ></button>
   </span>
 </template>
@@ -14,7 +14,7 @@
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps<{
-  tagId: string
+  id: string
   name: string
   withCloseButton?: boolean
 }>()
