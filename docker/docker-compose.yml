@@ -72,7 +72,7 @@ services:
     command: sh -c 'pip install -r requirements.txt && python3 main.py'
     volumes:
       - type: bind
-        source: ../m3u8uploader
+        source: ../lambda
         target: /app
     restart: always
     networks:
