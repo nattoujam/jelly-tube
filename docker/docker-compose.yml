@@ -8,7 +8,7 @@ services:
     container_name: 'jelly-tube-frontend'
     volumes:
       - type: bind
-        source: ../frontend_vue
+        source: ../frontend
         target: /usr/src/app
     command: sh -c "npm i && npm run build && npm run prod"
     ports:
