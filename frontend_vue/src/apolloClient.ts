@@ -2,8 +2,8 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core'
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
 
 const httpLink = createUploadLink({
-  // You should use an absolute URL here
-  uri: 'http://nattou-olivin.local:3333/graphql'
+  // You should use an absolute URL
+  uri: import.meta.env.VITE_BACKEND_ENDPOINT
 })
 
 // Cache implementation
