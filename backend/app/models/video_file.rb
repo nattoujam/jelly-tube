@@ -16,6 +16,12 @@ class VideoFile < ApplicationRecord
     return "#{Rails.configuration.s3_url}/video/#{video.id}#{ext}"
   end
 
+  def m3u8_path
+    return '' unless media.attached?
+
+    return "#{Rails.configuration.s3_url.gsub(/#{ENV['S3_BUCKET_NAME']}/, ENV['S3_BUCKET_NAME_M3U8'])}/#{video.id}/#{video.id}.m3u8"
+  end
+
   def content_type
     return '' unless media.attached?
 
