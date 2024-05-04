@@ -10,8 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
-
 const INITIAL_SELECT_VALUE = '-- Select --'
 
 type Option = {
