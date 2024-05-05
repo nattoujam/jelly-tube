@@ -15,6 +15,7 @@ const emits = defineEmits<{
 
 <style scoped>
 .navbar-burger {
+  color: var(--accent-color);
   margin-inline-start: 0;
 }
 </style>

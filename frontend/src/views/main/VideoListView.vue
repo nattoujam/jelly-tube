@@ -145,5 +145,6 @@ const onCancelDelete = () => {
 <style scoped>
 .table {
   width: 100%;
+  background-color: var(--bg-color);
 }
 </style>

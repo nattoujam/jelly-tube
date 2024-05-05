@@ -28,7 +28,7 @@ import Separator from '@/components/Separator.vue'
   display: flex;
   text-align: center;
   flex-direction: column;
-  background-color: #3f3f3f;
+  background-color: var(--sidebar-bg-color);
   width: 200px;
   height: 100%;
 }

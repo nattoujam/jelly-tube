@@ -3,6 +3,12 @@
   font-weight: normal;
   width: 100vw;
   height: 100vh;
-  display: flex;
   overflow-y: hidden;
+  background-color: var(--bg-color);
+}
+
+:root {
+  --bg-color: rgb(40, 40, 40);
+  --sidebar-bg-color: rgb(20, 20, 20);
+  --accent-color: rgb(92, 56, 168);
 }
