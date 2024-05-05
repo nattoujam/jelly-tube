@@ -1,31 +1,55 @@
 <template>
-  <TopSidebar class="sidebar" />
-  <main class="flex-column">
-    <TopBanner />
-    <div class="main-wrapper">
-      <RouterView />
+  <div class="main-row">
+    <TopSidebar class="left" />
+    <div class="right">
+      <main class="main-column">
+        <TopBanner />
+        <TopHeader />
+        <div class="router-wrapper">
+          <div class="router-view">
+            <RouterView />
+          </div>
+        </div>
+      </main>
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">
+import TopHeader from './views/TopHeader.vue'
 import TopSidebar from '@/views/TopSidebar.vue'
 import TopBanner from '@/views/TopBanner.vue'
 </script>
 
 <style scoped>
-.sidebar {
-  flex-shrink: 0;
-  flex-direction: column;
+.main-row {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
 }
-.flex-column {
+.right {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+.left {
+  width: 200px;
+  flex-shrink: 0;
+}
+@media (max-width: 550px) {
+  .left {
+    display: none;
+  }
+}
+.main-column {
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 }
-
-.main-wrapper {
-  margin: 30px;
+.router-wrapper {
   overflow-y: scroll;
+}
+.router-view {
+  margin: 30px;
 }
 </style>

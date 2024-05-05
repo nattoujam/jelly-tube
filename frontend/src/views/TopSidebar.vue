@@ -1,10 +1,8 @@
 <template>
-  <nav class="navbar wrapper">
-    <RouterLink to="/">
-      <div class="title">Jelly-Tube</div>
-    </RouterLink>
-    <hr class="separator" />
-    <div class="navbar-brand container">
+  <nav class="navbar">
+    <h1 class="title">Menu</h1>
+    <Separator class="separator" />
+    <div class="navbar-brand">
       <div>
         <RouterLink class="navbar-item" to="/videoList">videos</RouterLink>
         <RouterLink class="navbar-item" to="/tagList">tags</RouterLink>
@@ -16,14 +14,23 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+
+import Separator from '@/components/Separator.vue'
 </script>
 
 <style scoped>
 .wrapper {
   width: 200px;
-  max-height: 100vh;
-  background-color: #3f3f3f;
+  height: 100vh;
+}
+
+.navbar {
+  display: flex;
   text-align: center;
+  flex-direction: column;
+  background-color: #3f3f3f;
+  width: 200px;
+  height: 100%;
 }
 .title {
   font-size: 24px;
@@ -36,7 +43,7 @@ import { RouterLink } from 'vue-router'
   background-color: white;
   margin: 17px auto 0;
 }
-.container {
+.navbar-brand {
   margin-top: 8px;
 }
 </style>
