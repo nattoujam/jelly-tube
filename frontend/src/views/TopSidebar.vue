@@ -1,31 +1,50 @@
 <template>
-  <nav class="navbar">
+  <aside class="menu">
     <h1 class="title">Menu</h1>
     <Separator class="separator" />
     <template v-if="isSignIn">
-      <div>
-        <p class="username">{{ user.email }}</p>
-      </div>
-      <Separator class="separator" />
-      <div>
-        <a class="navbar-item" @click.stop="onSignOut">SignOut</a>
-      </div>
-      <Separator class="separator" />
-      <div>
-        <RouterLink class="navbar-item" to="/videoList">Videos</RouterLink>
-        <RouterLink class="navbar-item" to="/tagList">Tags</RouterLink>
-        <RouterLink class="navbar-item" to="/upload">Upload</RouterLink>
-      </div>
+      <div class="menu-label">User</div>
+      <ul class="menu-list">
+        <li>
+          <a @click.stop="onSignOut">SignOut</a>
+        </li>
+      </ul>
+      <p class="menu-label">General</p>
+      <ul class="menu-list">
+        <li>
+          <RouterLink to="/">Home</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/upload">Upload</RouterLink>
+        </li>
+      </ul>
+      <p class="menu-label">Manage</p>
+      <ul class="menu-list">
+        <li>
+          <RouterLink to="/videoList">Videos</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/tagList">Tags</RouterLink>
+        </li>
+      </ul>
     </template>
     <template v-else>
-      <RouterLink class="navbar-item" to="/signUp">SignUp</RouterLink>
-      <RouterLink class="navbar-item" to="/signIn">SingIn</RouterLink>
+      <div class="menu-label">User</div>
+      <ul class="menu-list">
+        <li>
+          <RouterLink to="/signUp">SignUp</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/signIn">SingIn</RouterLink>
+        </li>
+      </ul>
     </template>
-  </nav>
+  </aside>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+
 import { useRouter } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import { useAuth } from '@/stores/auth'
@@ -34,7 +53,7 @@ import { signOut } from '@/utils/auth'
 import Separator from '@/components/Separator.vue'
 
 const router = useRouter()
-const { user, isSignIn } = storeToRefs(useAuth())
+const { isSignIn } = storeToRefs(useAuth())
 
 const onSignOut = () => {
   signOut()
@@ -43,15 +62,8 @@ const onSignOut = () => {
 </script>
 
 <style scoped>
-.wrapper {
-  width: 200px;
-  height: 100vh;
-}
-
-.navbar {
-  display: flex;
-  text-align: center;
-  flex-direction: column;
+.menu {
+  padding: 0 10px 0 10px;
   background-color: var(--sidebar-bg-color);
   width: 200px;
   height: 100%;
@@ -65,12 +77,8 @@ const onSignOut = () => {
 }
 
 .separator {
-  width: 150px;
+  width: 180px;
   background-color: white;
   margin: 8px auto 8px;
-}
-
-.username {
-  font-size: 11px;
 }
 </style>

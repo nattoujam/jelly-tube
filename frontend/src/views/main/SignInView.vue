@@ -54,6 +54,7 @@ const onSignIn = () => {
     signIn(email.value, password.value)
     setBanner('Info', 'Success', 'SignIn success.')
   } catch (error) {
+    console.log('catch')
     setBanner('Error', 'Failed to SignIn', error)
   }
 }
