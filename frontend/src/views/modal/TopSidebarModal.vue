@@ -1,6 +1,6 @@
 <template>
   <ModalBase v-model="model">
-    <TopSidebar />
+    <TopSidebar class="sidebar" />
   </ModalBase>
 </template>
 
@@ -23,5 +23,9 @@ watch(route, () => {
 <style scoped>
 .modal {
   align-items: start;
+}
+
+.sidebar {
+  z-index: 1;
 }
 </style>
