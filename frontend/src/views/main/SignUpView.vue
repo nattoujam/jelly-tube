@@ -49,7 +49,12 @@ const onSignUp = () => {
     signUp(email.value, password.value)
     setBanner('Info', 'SignUp Success', 'Please check and confirm email address.')
   } catch (error) {
-    setBanner('Error', 'Failed to SignUp', error)
+    console.log('catch')
+    let mes: string = ''
+    if (error instanceof Error) {
+      mes = error.message
+    }
+    setBanner('Error', 'Failed to SignIn', mes)
   }
 }
 </script>

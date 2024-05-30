@@ -55,7 +55,11 @@ const onSignIn = () => {
     setBanner('Info', 'Success', 'SignIn success.')
   } catch (error) {
     console.log('catch')
-    setBanner('Error', 'Failed to SignIn', error)
+    let mes: string = ''
+    if (error instanceof Error) {
+      mes = error.message
+    }
+    setBanner('Error', 'Failed to SignIn', mes)
   }
 }
 
