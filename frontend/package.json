@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.11",
+    "@supabase/supabase-js": "^2.43.1",
     "@vue/apollo-composable": "^4.0.2",
     "apollo-upload-client": "^18.0.1",
     "graphql": "^16.8.1",
