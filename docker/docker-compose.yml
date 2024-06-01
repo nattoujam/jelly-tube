@@ -54,12 +54,13 @@ services:
     command: -c '/opt/bin/minio server /export --address :9000 --console-address :9001'
     volumes:
       - type: bind
-        source: /media/jelly/HD-TDA/jelly-tube/minio
+        source: /media/HD-TDA/jewel/jelly-tube/minio
         target: /export
     restart: always
     networks:
       backend:
         ipv4_address: 192.168.101.3
+      monitor:
 
   lambda:
     build:
@@ -94,3 +95,6 @@ networks:
       driver: default
       config:
         - subnet: 192.168.101.0/24
+  monitor:
+    external: true
+
