@@ -49,12 +49,11 @@ const canSignIn = computed<boolean>(() => {
   return Boolean(email.value) && Boolean(password.value)
 })
 
-const onSignIn = () => {
+const onSignIn = async () => {
   try {
-    signIn(email.value, password.value)
+    await signIn(email.value, password.value)
     setBanner('Info', 'Success', 'SignIn success.')
   } catch (error) {
-    console.log('catch')
     let mes: string = ''
     if (error instanceof Error) {
       mes = error.message

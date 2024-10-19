@@ -44,9 +44,9 @@ const canSignUp = computed<boolean>(() => {
   return Boolean(email.value) && Boolean(password.value)
 })
 
-const onSignUp = () => {
+const onSignUp = async () => {
   try {
-    signUp(email.value, password.value)
+    await signUp(email.value, password.value)
     setBanner('Info', 'SignUp Success', 'Please check and confirm email address.')
   } catch (error) {
     console.log('catch')
