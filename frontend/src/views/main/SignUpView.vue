@@ -16,7 +16,7 @@
     <div class="field">
       <label class="label">Password</label>
       <p class="control has-icons-left">
-        <input class="input" type="password" placeholder="Password" v-model="password" />
+        <PasswordInput v-model="password" auto-complete-type="new-password" />
         <span class="icon is-small is-left">
           <i class="fas fa-lock"></i>
         </span>
@@ -34,6 +34,8 @@
 import { ref, computed } from 'vue'
 import { signUp } from '@/utils/auth'
 import { useBanner } from '@/stores/banner'
+
+import PasswordInput from '@/components/atoms/PasswordInput.vue'
 
 const { setBanner } = useBanner()
 

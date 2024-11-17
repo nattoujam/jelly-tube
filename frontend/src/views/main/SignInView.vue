@@ -16,7 +16,7 @@
     <div class="field">
       <label class="label">Password</label>
       <p class="control has-icons-left">
-        <input class="input" type="password" placeholder="Password" v-model="password" />
+        <PasswordInput v-model="password" auto-complete-type="current-password" />
         <span class="icon is-small is-left">
           <i class="fas fa-lock"></i>
         </span>
@@ -37,6 +37,8 @@ import { storeToRefs } from 'pinia'
 import { signIn } from '@/utils/auth'
 import { useAuth } from '@/stores/auth'
 import { useBanner } from '@/stores/banner'
+
+import PasswordInput from '@/components/atoms/PasswordInput.vue'
 
 const router = useRouter()
 const { isSignIn } = storeToRefs(useAuth())
