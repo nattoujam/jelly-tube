@@ -4,12 +4,14 @@
       <th>ID</th>
       <th>Name</th>
       <th>Tags</th>
+      <th>m3u8</th>
       <th>Control</th>
     </thead>
     <tfoot>
       <th>ID</th>
       <th>Name</th>
       <th>Tags</th>
+      <th>m3u8</th>
       <th>Control</th>
     </tfoot>
     <tbody>
@@ -26,6 +28,11 @@
               :id="tag.id"
               :name="tag.name"
             />
+          </div>
+        </td>
+        <td>
+          <div class="checkbox">
+            <input type="checkbox" disabled :checked="video?.videoFile?.m3u8Path ? true : false" />
           </div>
         </td>
         <td class="buttons">
@@ -77,6 +84,9 @@ const videoListQuery = gql`
       tags {
         id
         name
+      }
+      videoFile {
+        m3u8Path
       }
     }
   }
