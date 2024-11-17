@@ -16,7 +16,7 @@
     <div class="field">
       <label class="label">Password</label>
       <p class="control has-icons-left">
-        <input class="input" type="password" placeholder="Password" v-model="password" />
+        <PasswordInput v-model="password" auto-complete-type="current-password" />
         <span class="icon is-small is-left">
           <i class="fas fa-lock"></i>
         </span>
@@ -38,6 +38,8 @@ import { signIn } from '@/utils/auth'
 import { useAuth } from '@/stores/auth'
 import { useBanner } from '@/stores/banner'
 
+import PasswordInput from '@/components/atoms/PasswordInput.vue'
+
 const router = useRouter()
 const { isSignIn } = storeToRefs(useAuth())
 const { setBanner } = useBanner()
@@ -49,12 +51,11 @@ const canSignIn = computed<boolean>(() => {
   return Boolean(email.value) && Boolean(password.value)
 })
 
-const onSignIn = () => {
+const onSignIn = async () => {
   try {
-    signIn(email.value, password.value)
+    await signIn(email.value, password.value)
     setBanner('Info', 'Success', 'SignIn success.')
   } catch (error) {
-    console.log('catch')
     let mes: string = ''
     if (error instanceof Error) {
       mes = error.message

@@ -16,7 +16,7 @@
     <div class="field">
       <label class="label">Password</label>
       <p class="control has-icons-left">
-        <input class="input" type="password" placeholder="Password" v-model="password" />
+        <PasswordInput v-model="password" auto-complete-type="new-password" />
         <span class="icon is-small is-left">
           <i class="fas fa-lock"></i>
         </span>
@@ -35,6 +35,8 @@ import { ref, computed } from 'vue'
 import { signUp } from '@/utils/auth'
 import { useBanner } from '@/stores/banner'
 
+import PasswordInput from '@/components/atoms/PasswordInput.vue'
+
 const { setBanner } = useBanner()
 
 const email = ref<string>('')
@@ -44,9 +46,9 @@ const canSignUp = computed<boolean>(() => {
   return Boolean(email.value) && Boolean(password.value)
 })
 
-const onSignUp = () => {
+const onSignUp = async () => {
   try {
-    signUp(email.value, password.value)
+    await signUp(email.value, password.value)
     setBanner('Info', 'SignUp Success', 'Please check and confirm email address.')
   } catch (error) {
     console.log('catch')
