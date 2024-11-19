@@ -4,14 +4,14 @@
       <th>ID</th>
       <th>Name</th>
       <th>Tags</th>
-      <th>m3u8</th>
+      <th>Streaming</th>
       <th>Control</th>
     </thead>
     <tfoot>
       <th>ID</th>
       <th>Name</th>
       <th>Tags</th>
-      <th>m3u8</th>
+      <th>Streaming</th>
       <th>Control</th>
     </tfoot>
     <tbody>
@@ -32,13 +32,20 @@
         </td>
         <td>
           <div class="checkbox">
-            <input type="checkbox" disabled :checked="video?.videoFile?.m3u8Path ? true : false" />
+            <input type="checkbox" disabled :checked="video.canStreaming ? true : false" />
           </div>
         </td>
         <td class="buttons">
           <button class="button is-small">Edit</button>
           <button class="button is-small is-danger" @click="() => onClickDelete(video.id)">
             Delete
+          </button>
+          <button
+            v-if="!video.canStreaming"
+            class="button is-small"
+            @click="() => convertStreamingVideo({ videoId: video.id })"
+          >
+            Convert
           </button>
         </td>
       </tr>
@@ -81,6 +88,7 @@ const videoListQuery = gql`
     videos {
       id
       title
+      canStreaming
       tags {
         id
         name
@@ -121,6 +129,27 @@ const {
     cache.writeQuery({ query: videoListQuery, data })
   }
 }))
+
+const convertStreamingVideoMutation = gql`
+  mutation convertStreamingVideoMutation($videoId: ID!) {
+    convertStreamingVideo(input: { videoId: $videoId }) {
+      id
+    }
+  }
+`
+const {
+  mutate: convertStreamingVideo,
+  onDone: onVideoConverted,
+  onError: onVideoConvertFailed
+} = useMutation(convertStreamingVideoMutation)
+
+onVideoConverted(() => {
+  setBanner('Info', 'Success', 'ストリーミング動画の変換をリクエストしました.')
+})
+
+onVideoConvertFailed(() => {
+  setBanner('Error', 'Error', 'ストリーミング動画の変換のリクエストに失敗しました.')
+})
 
 const videoList = computed(() => query.result.value?.videos ?? [])
 
