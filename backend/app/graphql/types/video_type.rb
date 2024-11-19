@@ -4,6 +4,7 @@ module Types
   class VideoType < Types::BaseObject
     field :id, ID, null: false
     field :title, String, null: false
+    field :can_streaming, Boolean, null: false
     field :video_file, VideoFileType, null: false
     field :thumnail, ThumnailType, null: false
     field :tags, [Types::TagType], null: true
