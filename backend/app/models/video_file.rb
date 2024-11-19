@@ -17,8 +17,18 @@ class VideoFile < ApplicationRecord
   belongs_to :video
   has_one_attached :media
 
+  after_commit :convert
+
+  def convert
+    M3u8ConverterJob.perform_later(self.video.id)
+  end
+
   def name
     media.filename.to_s
+  end
+
+  def extension
+    File.extname(name)
   end
 
   def path

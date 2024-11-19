@@ -6,3 +6,6 @@ docker/.env
 
 minio/*
 !minio/.keep
+
+redis/*
+!redis/.keep

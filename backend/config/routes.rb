@@ -1,9 +1,12 @@
+require 'sidekiq/web'
+
+Sidekiq::Web.use ActionDispatch::Cookies
+Sidekiq::Web.use ActionDispatch::Session::CookieStore, key: '_interslice_session'
+
 Rails.application.routes.draw do
   resources :thumnails
   post "/graphql", to: "graphql#execute"
   root 'hello#hello'
 
-  get 'videos', to: 'hello#index'
-  get 'videos/:id', to: 'hello#video'
-  post 'videos', to: 'hello#add'
+  mount Sidekiq::Web => '/sidekiq'
 end
