@@ -6,6 +6,8 @@ module Types
       description: "指定したVideoを編集"
     field :deleteVideo, mutation: Mutations::DeleteVideo,
       description: "指定したVideoを削除"
+    field :convertStreamingVideo, mutation: Mutations::ConvertStreamingVideo,
+      description: "VideoをStreaming用の形式へ変換"
 
     field :createTag, mutation: Mutations::CreateTag,
       description: "新しいTagを追加"

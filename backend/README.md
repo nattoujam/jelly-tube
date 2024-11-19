@@ -1,24 +1,22 @@
-# README
+# Jelly-Tube backend
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## credentials
 
-Things you may want to cover:
+```bash
+# development
+EDITOR=vim rails credentials:edit --environment development
 
-* Ruby version
+# test
+EDITOR=vim rails credentials:edit --environment test
 
-* System dependencies
+# production
+EDITOR=vim rails credentials:edit --environment production
+```
 
-* Configuration
+## monitor
 
-* Database creation
+### sidekiq
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+http://localhost:3333/sidekiq
+```

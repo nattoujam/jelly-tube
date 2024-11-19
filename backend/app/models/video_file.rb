@@ -1,11 +1,34 @@
+# == Schema Information
+#
+# Table name: video_files
+#
+#  id         :integer          not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  video_id   :integer
+#
+# Indexes
+#
+#  index_video_files_on_video_id  (video_id)
+#
 class VideoFile < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   belongs_to :video
   has_one_attached :media
 
+  after_commit :convert
+
+  def convert
+    M3u8ConverterJob.perform_later(self.video.id)
+  end
+
   def name
     media.filename.to_s
+  end
+
+  def extension
+    File.extname(name)
   end
 
   def path
