@@ -1,0 +1,7 @@
+minio:
+  endpoint: <%= ENV['URL'] =>:9000
+  video_bucket: develop.static.jelly-fish.local
+  m3u8_bucket: develop.static.m3u8.local
+redis:
+  convert_video:
+    url: redis://jelly-tube-redis:6379/0

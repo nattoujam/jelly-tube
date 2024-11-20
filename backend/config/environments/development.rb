@@ -1,7 +1,6 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.hosts << ENV['HOSTNAME']
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -33,7 +32,7 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :development
-  config.s3_url = "http://#{ENV['HOSTNAME']}:9000/develop.static.jelly-fish.local"
+  config.s3_url = "#{ENV['URL']}:9000/#{Settings.dig(:minio, :video_bucket)}"
 
 
   # Don't care if the mailer can't send.
@@ -65,12 +64,4 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
-
-  default_url_options[:protocol] = ENV['PROTOCOL']
-  default_url_options[:host] = ENV['HOSTNAME']
-  default_url_options[:port] = ENV['BACKEND_PORT']
 end
-
-
-
-

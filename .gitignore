@@ -1,8 +1,6 @@
 *.swp
 
-config/env_backend.yml
-
-docker/.env
+docker/minio.env
 
 minio/*
 !minio/.keep
