@@ -10,14 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_19_150400) do
-  create_table "Videos", force: :cascade do |t|
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "can_streaming", default: false, null: false
-  end
-
+ActiveRecord::Schema[7.0].define(version: 2025_01_09_174319) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -73,6 +66,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_19_150400) do
     t.datetime "updated_at", null: false
     t.integer "video_id"
     t.index ["video_id"], name: "index_video_files_on_video_id"
+  end
+
+  create_table "videos", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "can_streaming", default: false, null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
