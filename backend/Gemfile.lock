@@ -66,6 +66,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
@@ -89,9 +91,12 @@ GEM
       aws-sigv4 (~> 1.6)
     aws-sigv4 (1.6.0)
       aws-eventstream (~> 1, >= 1.0.2)
+    bcrypt (3.1.20)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
+    childprocess (5.1.0)
+      logger (~> 1.5)
     concurrent-ruby (1.2.2)
     config (5.5.2)
       deep_merge (~> 1.2, >= 1.2.1)
@@ -103,6 +108,16 @@ GEM
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     deep_merge (1.2.2)
+    devise (4.9.4)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
+    devise_token_auth (1.2.5)
+      bcrypt (~> 3.0)
+      devise (> 3.5.2, < 5)
+      rails (>= 4.2.0, < 8.1)
     dotenv (3.1.4)
     erubi (1.12.0)
     globalid (1.1.0)
@@ -119,6 +134,17 @@ GEM
     jmespath (1.6.2)
     json (2.6.3)
     language_server-protocol (3.17.0.3)
+    launchy (3.1.1)
+      addressable (~> 2.8)
+      childprocess (~> 5.0)
+      logger (~> 1.6)
+    letter_opener (1.10.0)
+      launchy (>= 2.2, < 4)
+    letter_opener_web (3.0.0)
+      actionmailer (>= 6.1)
+      letter_opener (~> 1.9)
+      railties (>= 6.1)
+      rexml
     logger (1.6.1)
     loofah (2.21.3)
       crass (~> 1.0.2)
@@ -147,11 +173,13 @@ GEM
     nokogiri (1.15.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    orm_adapter (0.5.0)
     ostruct (0.6.1)
     parallel (1.23.0)
     parser (3.2.2.3)
       ast (~> 2.4.1)
       racc
+    public_suffix (6.0.1)
     puma (5.6.6)
       nio4r (~> 2.0)
     racc (1.7.1)
@@ -197,6 +225,9 @@ GEM
     regexp_parser (2.8.1)
     reline (0.3.7)
       io-console (~> 0.5)
+    responders (3.1.1)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     rexml (3.2.6)
     rubocop (1.55.1)
       json (~> 2.3)
@@ -235,6 +266,8 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.4.2)
+    warden (1.2.9)
+      rack (>= 2.0.9)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -250,9 +283,12 @@ DEPENDENCIES
   bootsnap
   config
   debug
+  devise
+  devise_token_auth
   dotenv
   graphiql-rails
   graphql
+  letter_opener_web
   puma (~> 5.0)
   rack-cors
   rails (~> 7.0.4, >= 7.0.4.3)
