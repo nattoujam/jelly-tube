@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: thumnails
+# Table name: thumbnails
 #
 #  id         :integer          not null, primary key
 #  created_at :datetime         not null
@@ -9,7 +9,7 @@
 #
 # Indexes
 #
-#  index_thumnails_on_video_id  (video_id)
+#  index_thumbnails_on_video_id  (video_id)
 #
 # Foreign Keys
 #

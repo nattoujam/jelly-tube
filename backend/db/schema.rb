@@ -54,11 +54,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_21_161328) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "thumnails", force: :cascade do |t|
+  create_table "thumbnails", force: :cascade do |t|
     t.integer "video_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["video_id"], name: "index_thumnails_on_video_id"
+    t.index ["video_id"], name: "index_thumbnails_on_video_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -103,5 +103,5 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_21_161328) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "tag_video_relations", "tags"
   add_foreign_key "tag_video_relations", "videos"
-  add_foreign_key "thumnails", "videos"
+  add_foreign_key "thumbnails", "videos"
 end

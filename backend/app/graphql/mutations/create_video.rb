@@ -4,10 +4,10 @@ module Mutations
 
     argument :title, String, required: true
     argument :movie, ApolloUploadServer::Upload, required: true
-    argument :thumnail, ApolloUploadServer::Upload, required: true
+    argument :thumbnail, ApolloUploadServer::Upload, required: true
     argument :tag_ids, [Int]
 
-    def resolve(title:, movie:, thumnail:, tag_ids:)
+    def resolve(title:, movie:, thumbnail:, tag_ids:)
       Video.transaction {
         tags = Tag.find(tag_ids)
         video = Video.create!(title: title, tag_ids: tag_ids)
@@ -20,12 +20,12 @@ module Mutations
           video.video_file
         }
 
-        Thumnail.transaction {
-          video.create_thumnail! unless video.thumnail
+        Thumbnail.transaction {
+          video.create_thumbnail! unless video.thumbnail
           # ApolloUploadServer::Uploadをそのまま渡せないのでioとfilenameを渡す
-          ext = File.extname(thumnail.original_filename)
-          video.thumnail.image.attach(key: "thumnail/#{video.id}#{ext}", io: thumnail.to_io, filename: thumnail.original_filename)
-          video.thumnail
+          ext = File.extname(thumbnail.original_filename)
+          video.thumbnail.image.attach(key: "thumbnail/#{video.id}#{ext}", io: thumbnail.to_io, filename: thumbnail.original_filename)
+          video.thumbnail
         }
 
         { video: video }

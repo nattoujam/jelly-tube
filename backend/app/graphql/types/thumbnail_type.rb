@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class ThumnailType < Types::BaseObject
+  class ThumbnailType < Types::BaseObject
     field :id, ID, null: false
     field :video_id, ID, null: false
     field :name, String, null: false
