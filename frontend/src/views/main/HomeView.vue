@@ -2,7 +2,7 @@
   <div class="grid is-col-min-10">
     <div v-for="(video, index) in videos" :key="index" class="cell">
       <RouterLink :to="{ name: 'video', params: { id: video.id } }">
-        <img :src="video.thumnail.path" />
+        <img :src="video.thumbnail.path" />
       </RouterLink>
       <p>{{ video.title }}</p>
     </div>
@@ -22,7 +22,7 @@ const videosQuery = gql`
     videos {
       id
       title
-      thumnail {
+      thumbnail {
         path
       }
     }

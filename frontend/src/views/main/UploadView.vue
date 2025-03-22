@@ -38,9 +38,9 @@
     <div class="field">
       <DropArea class="drop-area" @dropped="onDropped" />
     </div>
-    <label class="label">Thumnail</label>
+    <label class="label">Thumbnail</label>
     <div v-if="url && video?.type" class="field">
-      <ThumnailGenerator :url="url" :contentType="video.type" @selected="onSelectedThumnail" />
+      <ThumbnailGenerator :url="url" :contentType="video.type" @selected="onSelectedThumbnail" />
     </div>
     <div class="buttons">
       <button class="button is-medium is-info" :disabled="!canUpload" @click="onUpload">
@@ -54,7 +54,7 @@
 import DropArea from '@/components/DropArea.vue'
 import SelectBox from '@/components/SelectBox.vue'
 import Tag from '@/components/Tag.vue'
-import ThumnailGenerator from '@/components/ThumnailGenerator.vue'
+import ThumbnailGenerator from '@/components/ThumbnailGenerator.vue'
 import Input from '@/components/Input.vue'
 
 import { type Ref, ref, computed, watch } from 'vue'
@@ -67,8 +67,8 @@ import { useBanner } from '@/stores/banner'
 const { setBanner } = useBanner()
 
 const createVideoMutation = gql`
-  mutation createVideo($title: String!, $movie: Upload!, $thumnail: Upload!, $tagIds: [Int!]!) {
-    createVideo(input: { title: $title, movie: $movie, thumnail: $thumnail, tagIds: $tagIds }) {
+  mutation createVideo($title: String!, $movie: Upload!, $thumbnail: Upload!, $tagIds: [Int!]!) {
+    createVideo(input: { title: $title, movie: $movie, thumbnail: $thumbnail, tagIds: $tagIds }) {
       clientMutationId
     }
   }
@@ -83,7 +83,7 @@ const {
   variables: {
     title: title.value,
     movie: video.value,
-    thumnail: thumnail.value,
+    thumbnail: thumbnail.value,
     tagIds: selectedTagIds.value.map((tag) => Number.parseInt(tag))
   }
 }))
@@ -125,12 +125,12 @@ const query = provideApolloClient(apolloClient)(() => useQuery(tagListQuery))
 
 const title: Ref<string> = ref('')
 const video: Ref<File | null> = ref(null)
-const thumnail: Ref<File | null> = ref(null)
+const thumbnail: Ref<File | null> = ref(null)
 const selectedTagIds: Ref<Array<string>> = ref([])
 const newTagName: Ref<string> = ref('')
 
 const url = computed(() => (video.value ? URL.createObjectURL(video.value) : null))
-const canUpload = computed(() => Boolean(video.value) && Boolean(thumnail.value))
+const canUpload = computed(() => Boolean(video.value) && Boolean(thumbnail.value))
 const tagList = computed(() => query.result.value?.tags ?? [])
 const tagOptions = computed(() =>
   tagList.value.map((tag: any) => {
@@ -173,11 +173,11 @@ const onDropped = (e: File) => {
   video.value = e
 }
 
-const onSelectedThumnail = (image: Blob) => {
+const onSelectedThumbnail = (image: Blob) => {
   if (!video.value) return
 
   const name = video.value.name.replace(/^(.+)\..+$/, '$1') + '.jpg'
-  thumnail.value = new File([image], name, { type: image.type })
+  thumbnail.value = new File([image], name, { type: image.type })
 }
 
 const onUpload = () => createVideo()

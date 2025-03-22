@@ -1,21 +1,21 @@
 # == Schema Information
 #
-# Table name: thumnails
+# Table name: thumbnails
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  video_id   :integer          not null
+#  video_id   :bigint           not null
 #
 # Indexes
 #
-#  index_thumnails_on_video_id  (video_id)
+#  index_thumbnails_on_video_id  (video_id)
 #
 # Foreign Keys
 #
-#  video_id  (video_id => videos.id)
+#  fk_rails_...  (video_id => videos.id)
 #
-class Thumnail < ApplicationRecord
+class Thumbnail < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   belongs_to :video
@@ -30,7 +30,7 @@ class Thumnail < ApplicationRecord
 
     # url_for(image)
     ext = File.extname(name)
-    return "#{Rails.configuration.s3_url}/thumnail/#{video.id}#{ext}"
+    return "#{Rails.configuration.s3_url}/thumbnail/#{video.id}#{ext}"
   end
 
   def content_type

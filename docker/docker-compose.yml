@@ -4,17 +4,16 @@ services:
       context: ../
       dockerfile: docker/Dockerfile_f
       network: host
-    image: 'jelly-tube/frontend'
-    container_name: 'jelly-tube-frontend'
+    image: jelly-tube/frontend
+    container_name: jelly-tube-frontend
     volumes:
       - type: bind
         source: ../frontend
         target: /usr/src/app
     command: sh -c "npm i && npm run build && npm run prod"
     ports:
-      - '3000:3000'
+      - 3000:3000
     stdin_open: true
-    restart: always
     networks:
       frontend:
         ipv4_address: 192.168.100.3
@@ -24,18 +23,23 @@ services:
       context: ../
       dockerfile: docker/Dockerfile_b
       network: host
-    image: 'jelly-tube/backend'
-    container_name: 'jelly-tube-backend'
+    image: jelly-tube/backend
+    container_name: jelly-tube-backend
+    depends_on:
+      - db
     volumes:
       - type: bind
         source: ../backend
         target: /app
-    command: /bin/bash ./script/server.sh
+      - type: volume
+        source: jelly_tube_gem
+        target: /usr/local/bundle
+    # command: /bin/bash ./script/server.sh
+    command: sh -c "bundle install && bundle exec rails s -p 3333 -b 0.0.0.0"
     ports:
-      - '3333:3333'
+      - 3333:3333
     tty: true
     stdin_open: true
-    restart: always
     networks:
       frontend:
         ipv4_address: 192.168.100.2
@@ -47,40 +51,57 @@ services:
       context: ../
       dockerfile: docker/Dockerfile_b
       network: host
-    image: 'jelly-tube/backend'
-    container_name: 'jelly-tube-backend-worker'
+    image: jelly-tube/backend
+    container_name: jelly-tube-backend-worker
     depends_on:
+      - db
       - redis
     volumes:
       - type: bind
         source: ../backend
         target: /app
+      - type: volume
+        source: jelly_tube_gem
+        target: /usr/local/bundle
     command: /bin/sh -c "bundle install && bundle exec sidekiq --environment=production"
-    restart: always
     networks:
       backend:
         ipv4_address: 192.168.101.6
 
-  redis:
-    image: 'redis:alpine3.20'
-    container_name: 'jelly-tube-redis'
+  db:
+    image: mariadb:11.8-ubi-rc
+    container_name: jelly-tube-db
+    environment:
+      MARIADB_ROOT_PASSWORD: jelly_root_password
     ports:
-      - '6379:6379'
+      - 3306:3306
+    volumes:
+      - type: volume
+        source: jelly_tube_db
+        target: /var/lib/mysql
+    networks:
+      backend:
+        ipv4_address: 192.168.101.7
+
+  redis:
+    image: redis:alpine3.20
+    container_name: jelly-tube-redis
+    ports:
+      - 6379:6379
     volumes:
       - type: bind
         source: ../redis
         target: /data
-    restart: always
     networks:
       backend:
         ipv4_address: 192.168.101.5
 
   minio:
-    image: 'minio/minio:RELEASE.2024-11-07T00-52-20Z'
-    container_name: 'jelly-tube-minio'
+    image: minio/minio:RELEASE.2024-11-07T00-52-20Z
+    container_name: jelly-tube-minio
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - 9000:9000
+      - 9001:9001
     env_file:
       - minio.env
     entrypoint: sh
@@ -89,7 +110,6 @@ services:
       - type: bind
         source: ../minio
         target: /export
-    restart: always
     networks:
       backend:
         ipv4_address: 192.168.101.3
@@ -109,3 +129,7 @@ networks:
       driver: default
       config:
         - subnet: 192.168.101.0/24
+
+volumes:
+  jelly_tube_gem:
+  jelly_tube_db:

@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :thumnails
+  resources :thumbnails
   post "/graphql", to: "graphql#execute"
   root 'hello#hello'
 
