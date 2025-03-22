@@ -10,7 +10,7 @@ const saveAuthInfo = (authInfo: AuthInfo) => {
   localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(authInfo))
 }
 
-const getAuthInfo = (): AuthInfo | undefined => {
+export const getAuthInfo = (): AuthInfo | undefined => {
   const authInfoStr = localStorage.getItem(LOCAL_STORAGE_AUTH_KEY)
   if (!authInfoStr) return undefined
 

@@ -1,16 +1,26 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client/core'
+import { setContext } from '@apollo/client/link/context'
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
+import { getAuthInfo } from '@/utils/auth'
 
 const httpLink = createUploadLink({
-  // You should use an absolute URL
   uri: import.meta.env.VITE_BACKEND_ENDPOINT
 })
 
-// Cache implementation
+const authLink = setContext((_, { headers }) => {
+  const authInfo = getAuthInfo()
+  return {
+    headers: {
+      ...headers,
+      ...authInfo
+    }
+  }
+})
+
 const cache = new InMemoryCache()
 
 const apolloClient = new ApolloClient({
-  link: httpLink,
+  link: authLink.concat(httpLink),
   cache
 })
 
