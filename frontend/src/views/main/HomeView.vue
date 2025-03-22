@@ -15,7 +15,7 @@ import { RouterLink } from 'vue-router'
 
 import { useQuery, provideApolloClient } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import apolloClient from '@/apolloClient'
+import apolloClient from '@/utils/apolloClient'
 
 const videosQuery = gql`
   query videosQuery {

@@ -61,7 +61,7 @@ import { type Ref, ref, computed, watch } from 'vue'
 import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { useQuery, provideApolloClient } from '@vue/apollo-composable'
-import apolloClient from '@/apolloClient'
+import apolloClient from '@/utils/apolloClient'
 import { useBanner } from '@/stores/banner'
 
 const { setBanner } = useBanner()

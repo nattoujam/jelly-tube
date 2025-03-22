@@ -33,5 +33,9 @@ module App
         ENV[key.to_s] = value
       end if File.exist?(env_file)
     end
+
+    config.session_store :cookie_store, key: 'jelly-tube-session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
   end
 end
