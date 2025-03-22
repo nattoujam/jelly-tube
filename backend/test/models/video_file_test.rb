@@ -2,10 +2,10 @@
 #
 # Table name: video_files
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  video_id   :integer
+#  video_id   :bigint
 #
 # Indexes
 #

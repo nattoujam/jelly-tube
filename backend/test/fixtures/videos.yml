@@ -2,9 +2,9 @@
 #
 # Table name: videos
 #
-#  id            :integer          not null, primary key
+#  id            :bigint           not null, primary key
 #  can_streaming :boolean          default(FALSE), not null
-#  title         :string
+#  title         :string(255)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
