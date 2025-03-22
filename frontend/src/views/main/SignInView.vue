@@ -55,6 +55,7 @@ const onSignIn = async () => {
   try {
     await signIn(email.value, password.value)
     setBanner('Info', 'Success', 'SignIn success.')
+    router.push({ name: 'home' })
   } catch (error) {
     let mes: string = ''
     if (error instanceof Error) {

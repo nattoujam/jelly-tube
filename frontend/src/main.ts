@@ -6,7 +6,7 @@ import { createPinia } from 'pinia'
 import App from '@/App.vue'
 import router from '@/router'
 import { DefaultApolloClient } from '@vue/apollo-composable'
-import apolloClient from '@/apolloClient'
+import apolloClient from '@/utils/apolloClient'
 
 const app = createApp({
   setup() {

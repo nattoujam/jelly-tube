@@ -51,12 +51,11 @@ const onSignUp = async () => {
     await signUp(email.value, password.value)
     setBanner('Info', 'SignUp Success', 'Please check and confirm email address.')
   } catch (error) {
-    console.log('catch')
     let mes: string = ''
     if (error instanceof Error) {
       mes = error.message
     }
-    setBanner('Error', 'Failed to SignIn', mes)
+    setBanner('Error', 'Failed to SignUp', mes)
   }
 }
 </script>

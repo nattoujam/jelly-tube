@@ -48,7 +48,7 @@ import { type Ref, ref, computed } from 'vue'
 
 import { useQuery, provideApolloClient, useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import apolloClient from '@/apolloClient'
+import apolloClient from '@/utils/apolloClient'
 
 import { useBanner } from '@/stores/banner'
 

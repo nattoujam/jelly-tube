@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { checkSignIn, getUser } from '@/utils/auth'
-import { useAuth } from '@/stores/auth'
+import { checkSignIn } from '@/utils/auth'
 
 import HomeView from '@/views/main/HomeView.vue'
 import SignInView from '@/views/main/SignInView.vue'
@@ -46,12 +45,8 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   if (['signIn', 'signUp'].includes(String(to.name?.toString()))) return true
 
-  const { isSignIn, setUser } = useAuth()
-  if (isSignIn) return true
-
   const alreadySignIn = await checkSignIn()
   if (alreadySignIn) {
-    setUser(await getUser())
     return true
   }
 
