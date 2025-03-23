@@ -16,7 +16,7 @@ WORKDIR /rails
 # Install base packages
 # Replace libpq-dev with sqlite3 if using SQLite, or libmysqlclient-dev if using MySQL
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips libmariadb-dev && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips libmariadb-dev ffmpeg && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
