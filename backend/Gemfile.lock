@@ -91,6 +91,7 @@ GEM
       aws-sigv4 (~> 1.6)
     aws-sigv4 (1.6.0)
       aws-eventstream (~> 1, >= 1.0.2)
+    base64 (0.2.0)
     bcrypt (3.1.20)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -125,7 +126,8 @@ GEM
     graphiql-rails (1.9.0)
       railties
       sprockets-rails
-    graphql (2.0.24)
+    graphql (2.0.32)
+      base64
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
