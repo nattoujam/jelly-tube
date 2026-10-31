@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_10_31_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_31_120000) do
   create_table "tag_video_relations", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "tag_id", null: false
     t.string "video_title", null: false

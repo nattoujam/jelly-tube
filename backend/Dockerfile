@@ -4,15 +4,14 @@
 # This Dockerfile is designed for production, not development.
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
-FROM ruby:3.3.6-slim-bookworm AS base
+ARG RUBY_VERSION=4.0.9
+FROM ruby:${RUBY_VERSION}-alpine AS base
 
 # Rails app lives here
 WORKDIR /rails
 
 # Install base packages
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libmariadb-dev ffmpeg && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+RUN apk add --no-cache bash jemalloc mariadb-connector-c ffmpeg tzdata
 
 # Set production environment
 ENV RAILS_ENV="production" \
@@ -24,12 +23,10 @@ ENV RAILS_ENV="production" \
 FROM base AS build
 
 # Install packages needed to build gems
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl git pkg-config libyaml-dev && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+RUN apk add --no-cache build-base git mariadb-connector-c-dev yaml-dev
 
 # Install application gems
-COPY ./Gemfile ./Gemfile.lock ./
+COPY ./Gemfile ./Gemfile.lock ./.ruby-version ./
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
@@ -48,8 +45,8 @@ COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
-RUN groupadd --system --gid 1000 rails && \
-    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
+RUN addgroup -S -g 1000 rails && \
+    adduser -D -u 1000 -G rails -s /bin/bash rails && \
     chown -R rails:rails db log storage tmp
 USER 1000:1000
 
