@@ -3,8 +3,8 @@
     <div v-for="(video, index) in videos" :key="index" class="cell">
       <RouterLink :to="{ name: 'video', params: { id: video.id } }">
         <img v-if="video.thumbnailPath" :src="backendUrl(video.thumbnailPath)" />
+        <p>{{ video.title }}</p>
       </RouterLink>
-      <p>{{ video.title }}</p>
     </div>
   </div>
 </template>
@@ -28,7 +28,11 @@ const videosQuery = gql`
   }
 `
 
-const query = provideApolloClient(apolloClient)(() => useQuery(videosQuery))
+const query = provideApolloClient(apolloClient)(() =>
+  useQuery(videosQuery, null, () => ({
+    fetchPolicy: 'cache-and-network'
+  }))
+)
 
 const videos = computed(() => query.result.value?.videos ?? [])
 </script>
