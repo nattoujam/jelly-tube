@@ -1,16 +1,20 @@
 <template>
   <table class="table">
     <thead>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Count</th>
-      <th>Control</th>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Count</th>
+        <th>Control</th>
+      </tr>
     </thead>
     <tfoot>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Count</th>
-      <th>Control</th>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Count</th>
+        <th>Control</th>
+      </tr>
     </tfoot>
     <tbody>
       <tr v-for="(tag, index) in tagList" :key="index">

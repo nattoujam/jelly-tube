@@ -1,16 +1,20 @@
 <template>
   <table class="table">
     <thead>
-      <th>Name</th>
-      <th>Tags</th>
-      <th>Streaming</th>
-      <th>Control</th>
+      <tr>
+        <th>Name</th>
+        <th>Tags</th>
+        <th>Streaming</th>
+        <th>Control</th>
+      </tr>
     </thead>
     <tfoot>
-      <th>Name</th>
-      <th>Tags</th>
-      <th>Streaming</th>
-      <th>Control</th>
+      <tr>
+        <th>Name</th>
+        <th>Tags</th>
+        <th>Streaming</th>
+        <th>Control</th>
+      </tr>
     </tfoot>
     <tbody>
       <tr v-for="(video, index) in videoList" :key="index">
