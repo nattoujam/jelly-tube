@@ -32,11 +32,13 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { signUp } from '@/utils/auth'
 import { useBanner } from '@/stores/banner'
 
 import PasswordInput from '@/components/atoms/PasswordInput.vue'
 
+const router = useRouter()
 const { setBanner } = useBanner()
 
 const email = ref<string>('')
@@ -49,7 +51,7 @@ const canSignUp = computed<boolean>(() => {
 const onSignUp = async () => {
   try {
     await signUp(email.value, password.value)
-    setBanner('Info', 'SignUp Success', 'Please check and confirm email address.')
+    router.push({ name: 'home' })
   } catch (error) {
     let mes: string = ''
     if (error instanceof Error) {
