@@ -76,7 +76,7 @@ const drawThumbnail = () => {
         if (blob) emit('selected', blob)
       }
     },
-    'img/jpeg',
+    'image/jpeg',
     0.75
   )
 }
