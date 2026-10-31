@@ -25,9 +25,11 @@ const emits = defineEmits<{
   select: [selectedValue: string]
 }>()
 
-const onChange = (e: any) => {
-  const selectedValue = e.target.value
+const onChange = (e: Event) => {
+  const select = e.target as HTMLSelectElement
+  const selectedValue = select.value
   if (selectedValue === '0') return
   emits('select', selectedValue)
+  select.value = '0'
 }
 </script>
