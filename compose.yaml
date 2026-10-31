@@ -1,0 +1,57 @@
+x-backend: &backend
+  build: ./backend
+  image: jelly-tube/backend
+  depends_on:
+    - db
+    - redis
+  environment:
+    URL: ${URL:?}
+    FRONTEND_PORT: ${FRONTEND_PORT:?}
+    SECRET_KEY_BASE: ${SECRET_KEY_BASE:?}
+    DB_USERNAME: ${DB_USERNAME:?}
+    DB_PASSWORD: ${DB_PASSWORD:?}
+    DB_HOST: db
+  volumes:
+    - type: bind
+      source: ${VIDEOS_DIR:?}
+      target: /rails/public/videos
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_BACKEND_ENDPOINT: ${URL:?}:3333/graphql
+        VITE_BACKEND_AUTHORIZATION_ENDPOINT: ${URL:?}:3333/api/v1/auth
+    image: jelly-tube/frontend
+    ports:
+      - ${FRONTEND_PORT:?}:3000
+
+  backend:
+    <<: *backend
+    ports:
+      - 3333:3333
+
+  worker:
+    <<: *backend
+    command: bundle exec sidekiq
+
+  db:
+    image: mariadb:11.8-ubi
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?}
+      MARIADB_AUTO_UPGRADE: 1
+    ports:
+      - 127.0.0.1:3306:3306
+    volumes:
+      - type: volume
+        source: jelly-tube-db
+        target: /var/lib/mysql
+
+  redis:
+    image: redis:alpine3.20
+    ports:
+      - 127.0.0.1:6379:6379
+
+volumes:
+  jelly-tube-db:
