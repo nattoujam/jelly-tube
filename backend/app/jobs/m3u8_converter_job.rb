@@ -1,5 +1,7 @@
 class M3u8ConverterJob < ApplicationJob
     queue_as :convert_video
+    sidekiq_options retry: 3
+    discard_on Video::NotFound
 
     def perform(title, hls_time = 9)
         video = Video.find(title)
