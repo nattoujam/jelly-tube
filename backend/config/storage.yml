@@ -6,21 +6,3 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
   public: true # 永続的なURLを取得
-
-development:
-  service: S3
-  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
-  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
-  region: <%= ENV['REGION'] %>
-  endpoint: 'http://localhost:9000'
-  bucket: <%= Settings.dig(:minio, :video_bucket) %>
-  force_path_style: true
-
-production:
-  service: S3
-  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
-  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
-  region: <%= ENV['REGION'] %>
-  endpoint: 'http://minio:9000'
-  bucket: <%= Settings.dig(:minio, :video_bucket) %>
-  force_path_style: true

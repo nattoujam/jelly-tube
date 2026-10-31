@@ -96,24 +96,6 @@ services:
       backend:
         ipv4_address: 192.168.101.5
 
-  minio:
-    image: minio/minio:RELEASE.2024-11-07T00-52-20Z
-    container_name: jelly-tube-minio
-    ports:
-      - 9000:9000
-      - 9001:9001
-    env_file:
-      - minio.env
-    entrypoint: sh
-    command: -c 'minio server /export --address :9000 --console-address :9001'
-    volumes:
-      - type: bind
-        source: ../minio
-        target: /export
-    networks:
-      backend:
-        ipv4_address: 192.168.101.3
-
 networks:
   frontend:
     name: jelly-tube-frontend

@@ -1,9 +1,9 @@
 <template>
-  <div v-if="videoFile">
+  <div v-if="video">
     <VideoPlayer class="player" :url="path" :contentType="contentType" />
     <p>{{ video.title }}</p>
-    <p>{{ videoFile.path }}</p>
-    <p>{{ videoFile.m3u8Path }}</p>
+    <p>{{ video.videoPath }}</p>
+    <p>{{ video.m3u8Path }}</p>
     <div class="tags">
       <Tag v-for="(tag, index) in tags" :key="`tag-${index}`" :id="tag.id" :name="tag.name" />
     </div>
@@ -33,6 +33,7 @@ import VideoPlayer from '@/components/VideoPlayer.vue'
 import { useQuery, provideApolloClient } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import apolloClient from '@/utils/apolloClient'
+import { backendUrl } from '@/utils/backendUrl'
 
 const route = useRoute()
 
@@ -42,11 +43,9 @@ const videosQuery = gql`
   query videoQuery($id: ID!) {
     video(id: $id) {
       title
-      videoFile {
-        path
-        m3u8Path
-        contentType
-      }
+      videoPath
+      m3u8Path
+      contentType
       tags {
         id
         name
@@ -59,12 +58,12 @@ const query = provideApolloClient(apolloClient)(() =>
 )
 
 const video = computed(() => query.result.value?.video)
-const videoFile = computed(() => query.result.value?.video?.videoFile)
-const path = computed(() =>
-  mode.value === 'm3u8' ? videoFile.value?.m3u8Path : videoFile.value?.path
-)
+const path = computed(() => {
+  const p = mode.value === 'm3u8' ? video.value?.m3u8Path : video.value?.videoPath
+  return p && backendUrl(p)
+})
 const contentType = computed(() =>
-  mode.value === 'm3u8' ? 'application/x-mpegURL' : videoFile.value?.contentType
+  mode.value === 'm3u8' ? 'application/x-mpegURL' : video.value?.contentType
 )
 const tags = computed(() => query.result.value?.video?.tags)
 

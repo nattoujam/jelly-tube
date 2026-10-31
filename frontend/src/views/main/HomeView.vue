@@ -2,7 +2,7 @@
   <div class="grid is-col-min-10">
     <div v-for="(video, index) in videos" :key="index" class="cell">
       <RouterLink :to="{ name: 'video', params: { id: video.id } }">
-        <img :src="video.thumbnail.path" />
+        <img v-if="video.thumbnailPath" :src="backendUrl(video.thumbnailPath)" />
       </RouterLink>
       <p>{{ video.title }}</p>
     </div>
@@ -16,15 +16,14 @@ import { RouterLink } from 'vue-router'
 import { useQuery, provideApolloClient } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import apolloClient from '@/utils/apolloClient'
+import { backendUrl } from '@/utils/backendUrl'
 
 const videosQuery = gql`
   query videosQuery {
     videos {
       id
       title
-      thumbnail {
-        path
-      }
+      thumbnailPath
     }
   }
 `
