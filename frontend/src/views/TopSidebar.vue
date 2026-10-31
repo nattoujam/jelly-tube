@@ -26,6 +26,9 @@
         <li>
           <RouterLink to="/tagList">Tags</RouterLink>
         </li>
+        <li>
+          <a :href="backendUrl('/sidekiq')" target="_blank" rel="noopener">Jobs</a>
+        </li>
       </ul>
     </template>
     <template v-else>
@@ -49,6 +52,7 @@ import { useRouter } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import { useAuth } from '@/stores/auth'
 import { signOut } from '@/utils/auth'
+import { backendUrl } from '@/utils/backendUrl'
 
 import Separator from '@/components/Separator.vue'
 
