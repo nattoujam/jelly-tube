@@ -2,9 +2,11 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core'
 import { setContext } from '@apollo/client/link/context'
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
 import { getAuthInfo } from '@/utils/auth'
+import { fetchWithUploadProgress } from '@/utils/fetchWithUploadProgress'
 
 const httpLink = createUploadLink({
-  uri: import.meta.env.VITE_BACKEND_ENDPOINT
+  uri: import.meta.env.VITE_BACKEND_ENDPOINT,
+  fetch: fetchWithUploadProgress
 })
 
 const authLink = setContext((_, { headers }) => {

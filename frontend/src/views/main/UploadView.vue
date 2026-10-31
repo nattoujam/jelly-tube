@@ -52,6 +52,14 @@
         Upload
       </button>
     </div>
+    <div v-if="uploadProgress" class="field">
+      <progress
+        class="progress is-info"
+        :value="uploadSent ? undefined : uploadProgress.loaded"
+        :max="uploadProgress.total"
+      ></progress>
+      <p class="help">{{ uploadProgressText }}</p>
+    </div>
   </div>
 </template>
 
@@ -67,6 +75,7 @@ import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { useQuery, provideApolloClient } from '@vue/apollo-composable'
 import apolloClient from '@/utils/apolloClient'
+import type { UploadProgressOptions } from '@/utils/fetchWithUploadProgress'
 import { useBanner } from '@/stores/banner'
 
 const { setBanner } = useBanner()
@@ -89,6 +98,13 @@ const {
     movie: video.value,
     thumbnail: thumbnail.value,
     tagIds: selectedTagIds.value.map((tag) => Number.parseInt(tag))
+  },
+  context: {
+    fetchOptions: {
+      onUploadProgress: (event: ProgressEvent) => {
+        uploadProgress.value = { loaded: event.loaded, total: event.total }
+      }
+    } satisfies UploadProgressOptions
   }
 }))
 
@@ -132,6 +148,7 @@ const video: Ref<File | null> = ref(null)
 const thumbnail: Ref<File | null> = ref(null)
 const selectedTagIds: Ref<Array<string>> = ref([])
 const newTagName: Ref<string> = ref('')
+const uploadProgress: Ref<{ loaded: number; total: number } | null> = ref(null)
 
 const url = computed(() => (video.value ? URL.createObjectURL(video.value) : null))
 const canUpload = computed(
@@ -154,6 +171,20 @@ const cannotCreateTag = computed(
   () =>
     newTagName.value === '' || tagList.value.map((tag: any) => tag.name).includes(newTagName.value)
 )
+const uploadSent = computed(
+  () => uploadProgress.value !== null && uploadProgress.value.loaded >= uploadProgress.value.total
+)
+const uploadProgressText = computed(() => {
+  if (!uploadProgress.value) return ''
+  if (uploadSent.value) return 'Saving on the server...'
+
+  const { loaded, total } = uploadProgress.value
+  return `${Math.floor((loaded / total) * 100)}% (${formatMegabytes(loaded)} / ${formatMegabytes(total)})`
+})
+
+function formatMegabytes(bytes: number): string {
+  return `${(bytes / 1024 ** 2).toFixed(1)} MB`
+}
 
 watch(tagList, (newTagList) => {
   const createdTag = newTagList.find((tag: any) => tag.name === newTagName.value)
@@ -170,10 +201,12 @@ onDone(() => {
   title.value = ''
   video.value = null
   selectedTagIds.value = []
+  uploadProgress.value = null
 })
 
 onError((error) => {
   setBanner('Error', 'Error', String(error))
+  uploadProgress.value = null
 })
 
 const onSelectedTags = (value: string) => {
