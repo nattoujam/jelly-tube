@@ -72,29 +72,25 @@ export const signOut = async () => {
   const authInfo = getAuthInfo()
   if (!authInfo) return
 
-  try {
-    await authClient.delete('/sign_out', { headers: authInfo })
-    deleteAuthInfo()
-    useAuth().$reset()
-  } catch (e: unknown) {
-    if (e instanceof AxiosError) throw new Error(e.response?.data.errors, { cause: e })
-    else throw new Error('Unknown error', { cause: e })
-  }
+  deleteAuthInfo()
+  useAuth().$reset()
+  await authClient.delete('/sign_out', { headers: authInfo }).catch(() => undefined)
 }
 
 export const checkSignIn = async (): Promise<Boolean> => {
   const { setIsSignIn } = useAuth()
   const authInfo = getAuthInfo()
-  if (!authInfo) return false
 
-  try {
-    const res = await authClient.get('/validate_token', {
-      params: authInfo
-    })
-
-    setIsSignIn(res.data.success)
-    return res.data.success
-  } catch (e: unknown) {
-    return false
+  let isSignIn = false
+  if (authInfo) {
+    try {
+      const res = await authClient.get('/validate_token', { params: authInfo })
+      isSignIn = res.data.success
+    } catch {
+      isSignIn = false
+    }
   }
+
+  setIsSignIn(isSignIn)
+  return isSignIn
 }

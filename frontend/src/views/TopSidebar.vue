@@ -59,8 +59,8 @@ import Separator from '@/components/Separator.vue'
 const router = useRouter()
 const { isSignIn } = storeToRefs(useAuth())
 
-const onSignOut = () => {
-  signOut()
+const onSignOut = async () => {
+  await signOut()
   router.push({ name: 'signIn' })
 }
 </script>
