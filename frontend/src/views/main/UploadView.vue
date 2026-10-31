@@ -36,14 +36,19 @@
     </div>
     <label class="label">video</label>
     <div class="field">
-      <DropArea class="drop-area" @dropped="onDropped" />
+      <DropArea v-model="video" class="drop-area" />
     </div>
     <label class="label">Thumbnail</label>
     <div v-if="url && video?.type" class="field">
       <ThumbnailGenerator :url="url" :contentType="video.type" @selected="onSelectedThumbnail" />
     </div>
     <div class="buttons">
-      <button class="button is-medium is-info" :disabled="!canUpload" @click="onUpload">
+      <button
+        class="button is-medium is-info"
+        :class="{ 'is-loading': createVideoLoading }"
+        :disabled="!canUpload"
+        @click="onUpload"
+      >
         Upload
       </button>
     </div>
@@ -76,7 +81,6 @@ const createVideoMutation = gql`
 const {
   mutate: createVideo,
   loading: createVideoLoading,
-  error: createVideoError,
   onDone,
   onError
 } = useMutation(createVideoMutation, () => ({
@@ -130,7 +134,13 @@ const selectedTagIds: Ref<Array<string>> = ref([])
 const newTagName: Ref<string> = ref('')
 
 const url = computed(() => (video.value ? URL.createObjectURL(video.value) : null))
-const canUpload = computed(() => Boolean(video.value) && Boolean(thumbnail.value))
+const canUpload = computed(
+  () =>
+    Boolean(title.value) &&
+    Boolean(video.value) &&
+    Boolean(thumbnail.value) &&
+    !createVideoLoading.value
+)
 const tagList = computed(() => query.result.value?.tags ?? [])
 const tagOptions = computed(() =>
   tagList.value.map((tag: any) => {
@@ -150,8 +160,16 @@ watch(tagList, (newTagList) => {
   if (createdTag) onSelectedTags(createdTag.id)
 })
 
+watch(video, (newVideo) => {
+  thumbnail.value = null
+  if (newVideo && !title.value) title.value = newVideo.name.replace(/^(.+)\..+$/, '$1')
+})
+
 onDone(() => {
-  setBanner('Info', 'Succsess', 'upload successful.')
+  setBanner('Info', 'Success', `"${title.value}" is uploaded.`)
+  title.value = ''
+  video.value = null
+  selectedTagIds.value = []
 })
 
 onError((error) => {
@@ -169,15 +187,8 @@ const onDeleteTag = (e: string) => {
 
 const onCreateTag = () => createTag()
 
-const onDropped = (e: File) => {
-  video.value = e
-}
-
 const onSelectedThumbnail = (image: Blob) => {
-  if (!video.value) return
-
-  const name = video.value.name.replace(/^(.+)\..+$/, '$1') + '.jpg'
-  thumbnail.value = new File([image], name, { type: image.type })
+  thumbnail.value = new File([image], 'thumbnail.jpg', { type: image.type })
 }
 
 const onUpload = () => createVideo()

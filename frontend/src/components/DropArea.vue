@@ -1,25 +1,25 @@
 <template>
-  <div
+  <label
     class="upload-square"
     @dragover.prevent="onDragover"
     @dragleave.prevent="onDragleave"
     @drop.prevent="onDrop"
   >
+    <input class="file-input" type="file" accept="video/*" @change="onSelect" />
     <div class="text">{{ areaText }}</div>
-  </div>
+  </label>
 </template>
 
 <script setup lang="ts">
 import { type Ref, ref, computed } from 'vue'
 
-const emit = defineEmits<{
-  dropped: [file: File]
-}>()
+const file = defineModel<File | null>()
 
 const isDrag: Ref<boolean> = ref(false)
 
 const areaText = computed(() => {
-  return isDrag.value ? 'Dragging' : 'Drag & Drop file'
+  if (isDrag.value) return 'Dragging'
+  return file.value?.name ?? 'Drag & Drop or click to select file'
 })
 
 const onDragover = () => {
@@ -30,9 +30,14 @@ const onDragleave = () => {
 }
 const onDrop = (e: DragEvent) => {
   isDrag.value = false
-  if (e?.dataTransfer?.files?.length) {
-    emit('dropped', e.dataTransfer?.files[0])
-  }
+  const dropped = e.dataTransfer?.files[0]
+  if (dropped) file.value = dropped
+}
+const onSelect = (e: Event) => {
+  const input = e.target as HTMLInputElement
+  const selected = input.files?.[0]
+  if (selected) file.value = selected
+  input.value = ''
 }
 </script>
 
@@ -47,5 +52,12 @@ const onDrop = (e: DragEvent) => {
   border-radius: 10px;
   border-width: 3px;
   border-style: dashed;
+  cursor: pointer;
+}
+.file-input {
+  display: none;
+}
+.text {
+  pointer-events: none;
 }
 </style>
