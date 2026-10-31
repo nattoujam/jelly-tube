@@ -2,23 +2,22 @@
   <div v-if="video">
     <VideoPlayer class="player" :url="path" :contentType="contentType" />
     <p>{{ video.title }}</p>
-    <p>{{ video.videoPath }}</p>
-    <p>{{ video.m3u8Path }}</p>
     <div class="tags">
       <Tag v-for="(tag, index) in tags" :key="`tag-${index}`" :id="tag.id" :name="tag.name" />
     </div>
     <label class="label">Mode</label>
     <div class="field">
-      <form class="control" @change="onChangeMode">
-        <label class="radio">
-          <input type="radio" name="mode" value="m3u8" checked />
+      <div class="control">
+        <label class="radio" :disabled="!video.canStreaming">
+          <input v-model="mode" type="radio" value="m3u8" :disabled="!video.canStreaming" />
           m3u8
         </label>
         <label class="radio">
-          <input type="radio" name="mode" value="mp4" />
+          <input v-model="mode" type="radio" value="mp4" />
           mp4
         </label>
-      </form>
+      </div>
+      <p v-if="!video.canStreaming" class="help">ストリーミング再生用のファイルがまだありません.</p>
     </div>
   </div>
 </template>
@@ -37,12 +36,13 @@ import { backendUrl } from '@/utils/backendUrl'
 
 const route = useRoute()
 
-const mode: Ref<'m3u8' | 'mp4'> = ref('m3u8')
+const selectedMode: Ref<'m3u8' | 'mp4'> = ref('m3u8')
 
 const videosQuery = gql`
   query videoQuery($id: ID!) {
     video(id: $id) {
       title
+      canStreaming
       videoPath
       m3u8Path
       contentType
@@ -54,10 +54,20 @@ const videosQuery = gql`
   }
 `
 const query = provideApolloClient(apolloClient)(() =>
-  useQuery(videosQuery, { id: route.params.id })
+  useQuery(
+    videosQuery,
+    () => ({ id: route.params.id }),
+    () => ({ fetchPolicy: 'cache-and-network' })
+  )
 )
 
 const video = computed(() => query.result.value?.video)
+const mode = computed({
+  get: () => (video.value?.canStreaming ? selectedMode.value : 'mp4'),
+  set: (value) => {
+    selectedMode.value = value
+  }
+})
 const path = computed(() => {
   const p = mode.value === 'm3u8' ? video.value?.m3u8Path : video.value?.videoPath
   return p && backendUrl(p)
@@ -66,10 +76,6 @@ const contentType = computed(() =>
   mode.value === 'm3u8' ? 'application/x-mpegURL' : video.value?.contentType
 )
 const tags = computed(() => query.result.value?.video?.tags)
-
-const onChangeMode = (e: any) => {
-  mode.value = e.target.value
-}
 </script>
 
 <style>
