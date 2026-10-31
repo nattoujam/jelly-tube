@@ -44,6 +44,7 @@
           <button
             v-if="!video.canStreaming"
             class="button is-small"
+            :disabled="convertLoading || convertRequestedIds.includes(video.id)"
             @click="() => convertStreamingVideo({ videoId: video.id })"
           >
             Convert
@@ -137,11 +138,14 @@ const convertStreamingVideoMutation = gql`
 `
 const {
   mutate: convertStreamingVideo,
+  loading: convertLoading,
   onDone: onVideoConverted,
   onError: onVideoConvertFailed
 } = useMutation(convertStreamingVideoMutation)
+const convertRequestedIds: Ref<Array<string>> = ref([])
 
-onVideoConverted(() => {
+onVideoConverted((result) => {
+  convertRequestedIds.value.push(result.data.convertStreamingVideo.id)
   setBanner('Info', 'Success', 'ストリーミング動画の変換をリクエストしました.')
 })
 
