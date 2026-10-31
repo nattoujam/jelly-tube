@@ -41,8 +41,9 @@ export const signUp = async (email: string, password: string) => {
 
     saveAuthInfo(authInfo)
   } catch (e: unknown) {
-    if (e instanceof AxiosError) throw new Error(e.response?.data.errors.full_messages)
-    else throw new Error('Unknown error')
+    if (e instanceof AxiosError)
+      throw new Error(e.response?.data.errors.full_messages, { cause: e })
+    else throw new Error('Unknown error', { cause: e })
   }
 }
 
@@ -62,8 +63,8 @@ export const signIn = async (email: string, password: string) => {
 
     saveAuthInfo(authInfo)
   } catch (e: unknown) {
-    if (e instanceof AxiosError) throw new Error(e.response?.data.errors)
-    else throw new Error('Unknown error')
+    if (e instanceof AxiosError) throw new Error(e.response?.data.errors, { cause: e })
+    else throw new Error('Unknown error', { cause: e })
   }
 }
 
@@ -76,8 +77,8 @@ export const signOut = async () => {
     deleteAuthInfo()
     useAuth().$reset()
   } catch (e: unknown) {
-    if (e instanceof AxiosError) throw new Error(e.response?.data.errors)
-    else throw new Error('Unknown error')
+    if (e instanceof AxiosError) throw new Error(e.response?.data.errors, { cause: e })
+    else throw new Error('Unknown error', { cause: e })
   }
 }
 

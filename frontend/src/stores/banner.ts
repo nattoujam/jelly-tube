@@ -2,8 +2,7 @@ import { defineStore } from 'pinia'
 
 export type BannerType = 'None' | 'Error' | 'Warn' | 'Info'
 
-export const useBanner = defineStore({
-  id: 'banner',
+export const useBanner = defineStore('banner', {
   state: () => ({
     bannerType: 'None' as BannerType,
     title: '' as string,

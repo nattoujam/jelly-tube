@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useAuth = defineStore({
-  id: 'auth',
+export const useAuth = defineStore('auth', {
   state: () => ({
     isSignIn: false as Boolean
   }),
