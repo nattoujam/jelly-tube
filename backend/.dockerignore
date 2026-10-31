@@ -30,6 +30,8 @@
 /tmp/storage/*
 !/tmp/storage/.keep
 
+/public/videos
+
 # Ignore assets.
 /node_modules/
 /app/assets/builds/*

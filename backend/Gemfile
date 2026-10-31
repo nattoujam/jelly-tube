@@ -36,7 +36,6 @@ gem "rack-cors"
 gem 'graphql'
 gem 'graphiql-rails'
 gem 'apollo_upload_server', '2.1'
-gem 'aws-sdk-s3'
 gem 'sidekiq'
 gem 'config'
 gem 'redis'

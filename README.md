@@ -15,33 +15,16 @@
    rails secret
    ```
 
-2. setup minio
-
-   ```
-   cp docker/minio.env.template docker/minio.env
-   ```
-
-3. run server
+2. run server
 
    ```
    cd docker
    docker-compose up -d
    ```
 
-4. create minio access key and user
+## 動画の配置
 
-5. type access key
-
-   ```
-   vim backend/.env
-   ```
-
-6. restart server
-
-   ```
-   cd docker
-   docker-compose up -d
-   ```
+`backend/public/videos/<タイトル>/source.<拡張子>` に動画を置くと、そのタイトルで一覧に出る。サムネイルは同じディレクトリに `thumbnail.<拡張子>` で置く。ストリーミング再生するには、動画一覧の Convert を押す。
 
 ## Enabled SSL
 
@@ -56,27 +39,14 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout .certs/server.k
 
 ### Setup
 
-1. minio と redis を起動
+1. redis を起動
 
    ```
    cd docker
-   docker-compose up -d minio redis
+   docker-compose up -d redis
    ```
 
-2. minio でユーザーと Access key を作成
-
-- http://localhost:9000
-
-3. secret の設定
-
-   backend/.env に追記
-
-   ```
-   AWS_ACCESS_KEY_ID: [作成したAccess Key]
-   AWS_SECRET_ACCESS_KEY: [作成したAccess KeyのSecret Key]
-   ```
-
-4. backend と frontend を起動
+2. backend と frontend を起動
 
    ```
    # backend

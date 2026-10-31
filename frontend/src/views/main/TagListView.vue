@@ -21,7 +21,7 @@
           {{ tag.name }}
         </td>
         <td>
-          {{ tag.videos.length }}
+          {{ tag.videoCount }}
         </td>
         <td class="buttons">
           <button class="button is-small">Edit</button>
@@ -67,9 +67,7 @@ const tagListQuery = gql`
     tags {
       id
       name
-      videos {
-        id
-      }
+      videoCount
     }
   }
 `

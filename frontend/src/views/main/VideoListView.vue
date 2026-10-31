@@ -1,14 +1,12 @@
 <template>
   <table class="table">
     <thead>
-      <th>ID</th>
       <th>Name</th>
       <th>Tags</th>
       <th>Streaming</th>
       <th>Control</th>
     </thead>
     <tfoot>
-      <th>ID</th>
       <th>Name</th>
       <th>Tags</th>
       <th>Streaming</th>
@@ -16,7 +14,6 @@
     </tfoot>
     <tbody>
       <tr v-for="(video, index) in videoList" :key="index">
-        <td>{{ video.id }}</td>
         <td>
           {{ video.title }}
         </td>
@@ -92,9 +89,6 @@ const videoListQuery = gql`
       tags {
         id
         name
-      }
-      videoFile {
-        m3u8Path
       }
     }
   }

@@ -12,8 +12,6 @@ module Types
     end
     field :videos, [Types::VideoType], null: false,
       description: "Videoの一覧取得"
-    field :videoFiles, [Types::VideoFileType], null: false,
-      description: "VideoFileの一覧取得"
     field :tags, [Types::TagType], null: false,
       description: "Tagの一覧取得"
 
@@ -23,10 +21,6 @@ module Types
 
     def videos
       Video.all
-    end
-
-    def videoFiles
-      VideoFile.all
     end
 
     def tags
